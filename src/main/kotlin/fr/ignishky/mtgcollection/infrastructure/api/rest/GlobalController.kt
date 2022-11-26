@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-internal class GlobalController(val commandBus: CommandBus) : GlobalApi {
+internal class GlobalController(
+    private val commandBus: CommandBus
+) : GlobalApi {
 
     override fun loadAll(): ResponseEntity<Void> {
         commandBus.dispatch(RefreshSetCommand())

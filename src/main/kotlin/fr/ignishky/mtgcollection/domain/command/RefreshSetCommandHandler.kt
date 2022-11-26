@@ -10,7 +10,6 @@ import kotlin.reflect.KClass
 class RefreshSetCommandHandler : CommandHandler {
 
     override fun handle(command: Command): List<Event<*, *, *>> {
-        println("COUCOUCOUCOUCOUCOU")
         return listOf()
     }
 

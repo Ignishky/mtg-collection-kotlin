@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class FrameworkConfiguration {
+
     @Bean
     fun commandBus(
         commandHandlers: List<CommandHandler>,
