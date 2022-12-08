@@ -6,10 +6,10 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventDTO
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventRepository
-import org.springframework.stereotype.Service
+import jakarta.inject.Named
 import kotlin.reflect.KClass
 
-@Service
+@Named
 class RefreshSetCommandHandler(
     private val eventRepository: EventRepository
 ) : CommandHandler {
