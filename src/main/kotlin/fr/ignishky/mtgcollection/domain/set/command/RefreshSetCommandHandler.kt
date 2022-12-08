@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.domain.command
+package fr.ignishky.mtgcollection.domain.set.command
 
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.command.CommandHandler

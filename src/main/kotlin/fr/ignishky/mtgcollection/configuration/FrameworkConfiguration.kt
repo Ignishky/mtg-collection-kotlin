@@ -6,7 +6,7 @@ import fr.ignishky.framework.cqrs.command.DirectCommandBus
 import fr.ignishky.framework.cqrs.command.middleware.CommandDispatcherMiddleware
 import fr.ignishky.framework.cqrs.command.middleware.LoggingCommandBusMiddleware
 import fr.ignishky.framework.domain.CorrelationIdGenerator
-import fr.ignishky.mtgcollection.domain.command.RefreshSetCommandHandler
+import fr.ignishky.mtgcollection.domain.set.command.RefreshSetCommandHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
