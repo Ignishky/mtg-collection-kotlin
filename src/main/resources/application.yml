@@ -12,3 +12,5 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: root
+  profiles:
+    active: production

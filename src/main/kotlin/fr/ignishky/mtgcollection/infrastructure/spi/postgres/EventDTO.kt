@@ -2,8 +2,11 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres
 
 import jakarta.persistence.*
 import jakarta.persistence.GenerationType.IDENTITY
-import java.time.LocalDateTime
-import java.time.LocalDateTime.now
+import java.time.Instant
+import java.time.Instant.EPOCH
+import java.time.ZoneOffset.UTC
+import java.time.ZonedDateTime
+import java.time.ZonedDateTime.ofInstant
 
 @Entity
 @Table(name = "events")
@@ -17,19 +20,22 @@ data class EventDTO(
     @Column(name = "aggregate_name")
     private val aggregateName: String,
     private val label: String,
-    private val instant: LocalDateTime,
+    private val instant: ZonedDateTime,
     private val payload: String,
     @Column(name = "correlation_id")
     private val correlationId: String,
 ) {
 
-    constructor() : this(0, "", "", "", now(), "", "")
+    constructor() : this(0, "", "", "", ofInstant(EPOCH, UTC), "", "")
+
     constructor(
+        id: Long,
         aggregateId: String,
         aggregateName: String,
         label: String,
+        instant: Instant,
         payload: String,
         correlationId: String
-    ) : this(0, aggregateId, aggregateName, label, now(), payload, correlationId)
+    ) : this(id, aggregateId, aggregateName, label, ofInstant(instant, UTC), payload, correlationId)
 
 }
