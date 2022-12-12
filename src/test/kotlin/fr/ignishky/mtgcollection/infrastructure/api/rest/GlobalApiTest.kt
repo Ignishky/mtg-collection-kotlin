@@ -2,8 +2,8 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest
 
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventDTO
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventDTORowMapper
+import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventEntity
+import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventEntityRowMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -40,9 +40,9 @@ internal class GlobalApiTest(
         mockMvc.perform(put("/sets"))
             .andExpect(status().isNoContent)
 
-        assertThat(template.query("SELECT * FROM events", EventDTORowMapper())).containsOnly(
-            EventDTO(1, "AggregateId1", "AggregateName", "AggregateLabel", clock.instant(), "", correlationId.toString()),
-            EventDTO(2, "AggregateId2", "AggregateName", "AggregateLabel", clock.instant(), "", correlationId.toString())
+        assertThat(template.query("SELECT * FROM events", EventEntityRowMapper())).containsOnly(
+            EventEntity(1, "AggregateId1", "AggregateName", "AggregateLabel", clock.instant(), "", correlationId.toString()),
+            EventEntity(2, "AggregateId2", "AggregateName", "AggregateLabel", clock.instant(), "", correlationId.toString())
         )
     }
 

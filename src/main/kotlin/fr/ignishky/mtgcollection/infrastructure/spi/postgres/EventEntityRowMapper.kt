@@ -3,10 +3,10 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 
-class EventDTORowMapper : RowMapper<EventDTO> {
+class EventEntityRowMapper : RowMapper<EventEntity> {
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): EventDTO {
-        return EventDTO(
+    override fun mapRow(rs: ResultSet, rowNum: Int): EventEntity {
+        return EventEntity(
             rs.getLong("id"),
             rs.getString("aggregate_id"),
             rs.getString("aggregate_name"),

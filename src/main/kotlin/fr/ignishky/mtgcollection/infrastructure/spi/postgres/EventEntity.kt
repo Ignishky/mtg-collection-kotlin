@@ -10,7 +10,7 @@ import java.time.ZonedDateTime.ofInstant
 
 @Entity
 @Table(name = "events")
-data class EventDTO(
+data class EventEntity(
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(columnDefinition = "bigserial")

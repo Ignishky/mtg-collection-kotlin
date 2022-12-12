@@ -4,5 +4,5 @@ import jakarta.inject.Named
 import org.springframework.data.jpa.repository.JpaRepository
 
 @Named
-interface EventRepository : JpaRepository<EventDTO, Int> {
+interface EventRepository : JpaRepository<EventEntity, Int> {
 }
