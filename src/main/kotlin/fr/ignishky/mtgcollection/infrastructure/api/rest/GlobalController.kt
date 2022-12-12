@@ -2,7 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest
 
 import fr.ignishky.framework.cqrs.command.CommandBus
 import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.mtgcollection.domain.set.command.RefreshSetCommand
+import fr.ignishky.mtgcollection.domain.set.command.RefreshSet
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -13,7 +13,7 @@ internal class GlobalController(
 ) : GlobalApi {
 
     override fun loadAll(correlationId: CorrelationId): ResponseEntity<Void> {
-        commandBus.dispatch(RefreshSetCommand(), correlationId)
+        commandBus.dispatch(RefreshSet(), correlationId)
         return ResponseEntity(NO_CONTENT)
     }
 
