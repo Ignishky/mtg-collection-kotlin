@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.spi.postgres
+package fr.ignishky.framework.cqrs.event.spi.postgres
 
 import jakarta.persistence.*
 import jakarta.persistence.GenerationType.IDENTITY

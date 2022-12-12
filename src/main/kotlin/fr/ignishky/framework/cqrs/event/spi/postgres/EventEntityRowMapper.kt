@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.spi.postgres
+package fr.ignishky.framework.cqrs.event.spi.postgres
 
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet

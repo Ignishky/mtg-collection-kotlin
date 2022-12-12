@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventEntity
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventRepository
+import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
+import fr.ignishky.framework.cqrs.event.spi.postgres.EventRepository
 
 class EventPersistenceMiddleware(
     next: CommandMiddleware,

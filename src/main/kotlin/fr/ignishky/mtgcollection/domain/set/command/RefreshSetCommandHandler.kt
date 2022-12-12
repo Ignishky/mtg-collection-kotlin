@@ -4,8 +4,8 @@ import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.command.CommandHandler
 import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventEntity
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventRepository
+import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
+import fr.ignishky.framework.cqrs.event.spi.postgres.EventRepository
 import jakarta.inject.Named
 import java.time.Clock
 import kotlin.reflect.KClass

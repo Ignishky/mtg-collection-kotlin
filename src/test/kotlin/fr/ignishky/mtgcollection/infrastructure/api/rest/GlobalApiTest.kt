@@ -2,8 +2,8 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest
 
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventEntity
-import fr.ignishky.mtgcollection.infrastructure.spi.postgres.EventEntityRowMapper
+import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
+import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntityRowMapper
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
