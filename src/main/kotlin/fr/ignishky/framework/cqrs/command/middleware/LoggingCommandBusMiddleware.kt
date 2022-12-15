@@ -10,16 +10,17 @@ class LoggingCommandBusMiddleware(next: CommandMiddleware) : CommandMiddleware(n
     companion object {
 
         private val LOGGER = LoggerFactory.getLogger(LoggingCommandBusMiddleware::class.java)
+
     }
 
     override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
-        LOGGER.info("Executing {} with parameter {}", command.javaClass.simpleName, command)
+        LOGGER.info("Executing {} with parameter {}", command::class.simpleName, command)
         return try {
             val next = next(command, correlationId)
-            LOGGER.info("Success on {}. Events : {}", command.javaClass.simpleName, next)
+            LOGGER.info("Success on {}. Events : {}", command::class.simpleName, next)
             next
         } catch (throwable: Throwable) {
-            LOGGER.error("Error on {}", command.javaClass.simpleName, throwable)
+            LOGGER.error("Error on {}", command::class.simpleName, throwable)
             throw throwable
         }
     }
@@ -29,6 +30,7 @@ class LoggingCommandBusMiddleware(next: CommandMiddleware) : CommandMiddleware(n
         override fun chain(next: CommandMiddleware): CommandMiddleware {
             return LoggingCommandBusMiddleware(next)
         }
+
     }
 
 }

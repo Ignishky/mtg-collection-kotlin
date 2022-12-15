@@ -1,9 +1,9 @@
 package fr.ignishky.mtgcollection.infrastructure.api.rest
 
-import fr.ignishky.framework.domain.CorrelationId
-import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
 import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntityRowMapper
+import fr.ignishky.framework.domain.CorrelationId
+import fr.ignishky.framework.domain.CorrelationIdGenerator
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -31,7 +31,7 @@ internal class GlobalApiTest(
     @MockBean
     private lateinit var correlationIdGenerator: CorrelationIdGenerator
 
-    private val correlationId = CorrelationId(UUID.randomUUID())
+    private val correlationId = CorrelationId("test-correlation-id")
 
     @Test
     fun `Should load cards from scryfall`() {

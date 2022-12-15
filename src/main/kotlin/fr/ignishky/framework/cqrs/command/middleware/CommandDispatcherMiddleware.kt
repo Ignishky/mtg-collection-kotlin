@@ -18,7 +18,7 @@ class CommandDispatcherMiddleware(
     override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
         when(command) {
             is RefreshSet -> return handlersByCommand[RefreshSet::class]!!.handle(command, correlationId)
-            else -> throw IllegalArgumentException("command handler not found for " + command.javaClass)
+            else -> throw IllegalArgumentException("command handler not found for ${command::class}")
         }
     }
 

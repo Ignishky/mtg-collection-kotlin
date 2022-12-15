@@ -1,10 +1,8 @@
 package fr.ignishky.framework.domain
 
-import java.util.*
-
-data class CorrelationId(val value: UUID) {
+data class CorrelationId(val value: String) {
 
     override fun toString(): String {
-        return value.toString()
+        return value
     }
 }
