@@ -1,10 +1,11 @@
 package fr.ignishky.framework.cqrs.event
 
 import fr.ignishky.framework.domain.Aggregate
+import fr.ignishky.framework.domain.AggregateId
 import java.time.Instant
 import kotlin.reflect.KClass
 
-abstract class Event<I, A : Aggregate<I>, P : Payload>
+abstract class Event<I : AggregateId, A : Aggregate<I>, P : Payload>
 protected constructor(
     val id: Long,
     val aggregateId: I,

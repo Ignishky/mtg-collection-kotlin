@@ -3,9 +3,9 @@ package fr.ignishky.framework.cqrs.command.middleware
 import com.fasterxml.jackson.databind.ObjectMapper
 import fr.ignishky.framework.cqrs.command.Command
 import fr.ignishky.framework.cqrs.event.Event
-import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
 import fr.ignishky.framework.cqrs.event.spi.postgres.EventRepository
+import fr.ignishky.framework.domain.CorrelationId
 
 class EventPersistenceMiddleware(
     next: CommandMiddleware,
@@ -18,12 +18,12 @@ class EventPersistenceMiddleware(
         eventRepository.saveAll(events.map {
             EventEntity(
                 0,
-                it.aggregateId.toString(),
+                it.aggregateId.value(),
                 it.aggregateClass.simpleName.toString(),
                 it::class.simpleName.toString(),
                 it.instant,
                 objectMapper.writeValueAsString(it.payload),
-                correlationId.toString()
+                correlationId.value
             )
         })
         return events

@@ -5,6 +5,10 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.framework.domain.CorrelationId
+import fr.ignishky.mtgcollection.domain.set.event.SetCreated
+import fr.ignishky.mtgcollection.domain.set.event.SetCreated.SetCreatedHandler
+import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
+import fr.ignishky.mtgcollection.domain.set.event.SetUpdated.SetUpdatedHandler
 
 class EventDispatcherMiddleware(
     next: CommandMiddleware,
@@ -18,6 +22,8 @@ class EventDispatcherMiddleware(
 
         events.forEach {
             when (it) {
+                is SetCreated -> (handlersByEvent[it::class] as SetCreatedHandler).handle(it)
+                is SetUpdated -> (handlersByEvent[it::class] as SetUpdatedHandler).handle(it)
                 else -> throw IllegalArgumentException("event handler not found for ${it::class}")
             }
         }

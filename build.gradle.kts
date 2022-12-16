@@ -17,6 +17,8 @@ repositories {
 }
 
 dependencies {
+    val mockServerVersion = "5.14.0"
+
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -28,6 +30,8 @@ dependencies {
     runtimeOnly("org.flywaydb:flyway-core")
     runtimeOnly("org.postgresql:postgresql")
 
+    testImplementation("org.mock-server:mockserver-junit-jupiter:$mockServerVersion")
+    testImplementation("org.mock-server:mockserver-spring-test-listener:$mockServerVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:postgresql:1.17.6")
