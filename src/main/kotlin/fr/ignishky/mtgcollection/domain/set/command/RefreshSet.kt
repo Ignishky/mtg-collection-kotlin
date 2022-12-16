@@ -16,14 +16,18 @@ class RefreshSet : Command {
     class RefreshSetHandler(
         private val clock: Clock,
         private val eventRepository: EventRepository
-    ) : CommandHandler {
+    ) : CommandHandler<RefreshSet> {
 
-        override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
+        override fun handle(command: RefreshSet, correlationId: CorrelationId): List<Event<*, *, *>> {
             eventRepository.save(EventEntity(0, "AggregateId1", "AggregateName", "AggregateLabel", clock.instant(), "", correlationId.toString()))
             eventRepository.save(EventEntity(0, "AggregateId2", "AggregateName", "AggregateLabel", clock.instant(), "", correlationId.toString()))
             val events = eventRepository.findAll()
             println(events)
             return listOf()
+        }
+
+        override fun listenTo(): KClass<out RefreshSet> {
+            return RefreshSet::class
         }
 
     }
