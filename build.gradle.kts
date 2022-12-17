@@ -20,6 +20,7 @@ dependencies {
     val mockServerVersion = "5.14.0"
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.4")
     implementation("jakarta.inject:jakarta.inject-api:2.0.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

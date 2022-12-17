@@ -9,6 +9,7 @@ import fr.ignishky.mtgcollection.domain.set.event.SetUpdated
 import fr.ignishky.mtgcollection.domain.set.port.SetRefererPort
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
+import mu.KotlinLogging.logger
 import java.time.Clock
 import kotlin.reflect.KClass
 
@@ -25,8 +26,13 @@ class RefreshSet : Command {
         private val setStorePort: SetStorePort
     ) : CommandHandler<RefreshSet> {
 
+        private val logger = logger {}
+
         override fun handle(command: RefreshSet, correlationId: CorrelationId): List<Event<*, *, *>> {
+
             val knownSetsById = setStorePort.getAll().associateBy { it.id }
+            logger.info { "Refreshing ${knownSetsById.size} sets..." }
+
             return setRefererPort.getAllSets()
                 .mapNotNull {
                     if (knownSetsById[it.id] == null) {

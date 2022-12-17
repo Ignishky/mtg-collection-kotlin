@@ -10,6 +10,7 @@ import fr.ignishky.mtgcollection.domain.set.model.SetId
 import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
+import mu.KotlinLogging.logger
 import java.time.Clock
 import kotlin.reflect.KClass
 
@@ -28,7 +29,10 @@ class SetUpdated(aggregateId: SetId, code: SetCode, name: SetName, clock: Clock)
     @Named
     class SetUpdatedHandler(private val setStorePort: SetStorePort) : EventHandler<SetUpdated> {
 
+        private val logger = logger {}
+
         override fun handle(event: SetUpdated) {
+            logger.info { "Updating set '${event.payload.name}'..." }
             val existingSet = setStorePort.get(event.aggregateId)
             setStorePort.store(event.apply(existingSet))
         }
