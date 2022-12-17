@@ -3,14 +3,18 @@ package fr.ignishky.mtgcollection.infrastructure.api.rest
 import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
+import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
+import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder.prepareCards
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder.prepareSets
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.angelicObserver
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.snc
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
+import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.mapper.CardEntityMapper.toCardEntity
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.mapper.SetEntityMapper.toSetEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -48,6 +52,7 @@ internal class GlobalApiTest(
     private val setUpToDate = snc()
     private val setToCreate = khm()
     private val setUnmodified = afr()
+    private val card1ToCreate = angelicObserver()
 
     @BeforeEach
     fun setUp() {
@@ -59,6 +64,7 @@ internal class GlobalApiTest(
     fun `Should load cards from scryfall`() {
         // GIVEN
         prepareSets(mockServer)
+        prepareCards(mockServer)
         jdbc.save(setUnmodified, setUpToDate.copy(name = SetName("Old Name")))
 
         // WHEN
@@ -69,7 +75,8 @@ internal class GlobalApiTest(
 
         assertThat(jdbc.getEvents()).containsOnly(
             toSetUpdatedEntity(1, setUpToDate),
-            toSetCreatedEntity(2, setToCreate)
+            toSetCreatedEntity(2, setToCreate),
+            toCardCreatedEntity(3, card1ToCreate)
         )
 
         assertThat(jdbc.getSets()).containsOnly(
@@ -77,6 +84,11 @@ internal class GlobalApiTest(
             toSetEntity(setToCreate),
             toSetEntity(setUnmodified)
         )
+
+        assertThat(jdbc.getCards()).containsOnly(
+            toCardEntity(card1ToCreate)
+        )
+
     }
 
     @Test
@@ -115,6 +127,18 @@ internal class GlobalApiTest(
             "SetCreated",
             Instant.parse("1981-08-25T13:50:00Z"),
             "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\"}",
+            correlationId.value
+        )
+    }
+
+    fun toCardCreatedEntity(id: Long, card: Card): EventEntity {
+        return EventEntity(
+            id,
+            card.id.value,
+            "Card",
+            "CardCreated",
+            Instant.parse("1981-08-25T13:50:00Z"),
+            "{\"name\":\"${card.name.value}\"}",
             correlationId.value
         )
     }

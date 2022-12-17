@@ -1,5 +1,8 @@
 package fr.ignishky.mtgcollection.infrastructure
 
+import fr.ignishky.mtgcollection.domain.card.model.Card
+import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.model.CardName
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.model.SetId
@@ -28,6 +31,13 @@ object TestFixtures {
             SetId("43057fad-b1c1-437f-bc48-0045bce6d8c9"),
             SetCode("khm"),
             SetName("Kaldheim")
+        )
+    }
+
+    fun angelicObserver(): Card {
+        return Card(
+            CardId("e6cce4d3-e6d8-4c6f-9d9c-c0a8a607a42f"),
+            CardName("Angelic Observer")
         )
     }
 
