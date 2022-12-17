@@ -10,7 +10,7 @@ class LoggingCommandBusMiddleware(next: CommandMiddleware) : CommandMiddleware(n
     private val logger = KotlinLogging.logger {}
 
     override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
-        logger.info("Executing {} with parameter {}", command::class.simpleName, command)
+        logger.info("Executing {}", command::class.simpleName)
         return try {
             val next = next(command, correlationId)
             logger.info("Success on {}. Events : {}", command::class.simpleName, next)

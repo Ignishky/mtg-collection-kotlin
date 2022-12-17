@@ -15,10 +15,6 @@ import kotlin.reflect.KClass
 
 class RefreshSet : Command {
 
-    override fun toString(): String {
-        return "''"
-    }
-
     @Named
     class RefreshSetHandler(
         private val clock: Clock,
