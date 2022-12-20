@@ -10,8 +10,10 @@ import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder.prepareSets
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.snc
+import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.mapper.SetEntityMapper.toSetEntity
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockserver.client.MockServerClient
@@ -20,9 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.Instant
 
@@ -44,10 +49,15 @@ internal class GlobalApiTest(
     private val setToCreate = khm()
     private val setUnmodified = afr()
 
+    @BeforeEach
+    fun setUp() {
+        jdbc.dropAll()
+        `when`(correlationIdGenerator.generate()).thenReturn(correlationId)
+    }
+
     @Test
     fun `Should load cards from scryfall`() {
         // GIVEN
-        `when`(correlationIdGenerator.generate()).thenReturn(correlationId)
         prepareSets(mockServer)
         jdbc.save(setUnmodified, setUpToDate.copy(name = SetName("Old Name")))
 
@@ -66,6 +76,22 @@ internal class GlobalApiTest(
             toSetEntity(setUpToDate),
             toSetEntity(setToCreate),
             toSetEntity(setUnmodified)
+        )
+    }
+
+    @Test
+    fun `Should return sets`() {
+        // GIVEN
+        jdbc.save(setUnmodified, setUpToDate)
+
+        // WHEN
+        val resultActions = mockMvc.perform(get("/sets"))
+
+        // THEN
+        resultActions.andExpectAll(
+            status().isOk,
+            content().contentType(APPLICATION_JSON),
+            content().json(readFile("refresh/setsResponse.json"), true)
         )
     }
 

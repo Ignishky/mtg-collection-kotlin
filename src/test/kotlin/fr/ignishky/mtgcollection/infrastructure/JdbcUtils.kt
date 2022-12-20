@@ -11,6 +11,10 @@ import org.springframework.jdbc.core.JdbcTemplate
 @Named
 class JdbcUtils(private val template: JdbcTemplate) {
 
+    fun dropAll() {
+        template.update("DELETE FROM sets")
+    }
+
     fun save(vararg set: Set) {
         set.map {
             template.update(

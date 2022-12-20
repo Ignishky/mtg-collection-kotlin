@@ -1,0 +1,12 @@
+{
+  "sets": [
+    {
+      "code": "afr",
+      "name": "Adventures in the Forgotten Realms"
+    },
+    {
+      "code": "snc",
+      "name": "Streets of New Capenna"
+    }
+  ]
+}

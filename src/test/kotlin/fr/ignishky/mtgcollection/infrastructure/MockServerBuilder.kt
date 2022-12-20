@@ -1,11 +1,12 @@
 package fr.ignishky.mtgcollection.infrastructure
 
-import org.apache.http.HttpHeaders
-import org.apache.http.HttpStatus
+import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
+import org.apache.http.HttpHeaders.CONTENT_TYPE
+import org.apache.http.HttpStatus.SC_OK
 import org.mockserver.client.MockServerClient
 import org.mockserver.model.HttpRequest
 import org.mockserver.model.HttpResponse
-import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
 object MockServerBuilder {
 
@@ -18,9 +19,9 @@ object MockServerBuilder {
             )
             .respond(
                 HttpResponse.response()
-                    .withStatusCode(HttpStatus.SC_OK)
-                    .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .withBody(TestUtils.readFile("refresh/sets.json"))
+                    .withStatusCode(SC_OK)
+                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                    .withBody(readFile("refresh/sets.json"))
             )
     }
 
