@@ -6,6 +6,7 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.mtgcollection.domain.card.event.CardCreated
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
+import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import fr.ignishky.mtgcollection.domain.set.port.SetStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging.logger
@@ -18,6 +19,7 @@ class RefreshCard : Command {
     class RefreshCardHandler(
         private val setStorePort: SetStorePort,
         private val cardRefererPort: CardRefererPort,
+        private val cardStorePort: CardStorePort,
         private val clock: Clock
     ) : CommandHandler<RefreshCard> {
 
@@ -25,11 +27,19 @@ class RefreshCard : Command {
 
         override fun handle(command: RefreshCard, correlationId: CorrelationId): List<Event<*, *, *>> {
             return setStorePort.getAll()
-                .flatMap {
+                .map {
                     logger.info { "Refreshing cards from ${it.code.value}" }
-                    cardRefererPort.getCards(it.code)
+                    Pair(cardRefererPort.getCards(it.code), cardStorePort.get(it.code).map { it.id })
                 }
-                .map { CardCreated(it.id, it.name, clock) }
+                .flatMap { pair ->
+                    pair.first.mapNotNull { card ->
+                        if (!pair.second.contains(card.id)) {
+                            CardCreated(card.id, card.name, card.setCode, clock)
+                        } else {
+                            null
+                        }
+                    }
+                }
         }
 
         override fun listenTo(): KClass<out RefreshCard> {

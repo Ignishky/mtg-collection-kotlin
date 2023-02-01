@@ -9,9 +9,9 @@ import org.mockserver.model.HttpResponse.response
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
-object MockServerBuilder {
+class MockServerBuilder(private val mockServer: MockServerClient) {
 
-    fun prepareSets(mockServer: MockServerClient) {
+    fun prepareSets() {
         mockServer
             .`when`(
                 request()
@@ -26,21 +26,26 @@ object MockServerBuilder {
             )
     }
 
-    fun prepareCards(mockServer: MockServerClient) {
+    fun prepareCards() {
+        prepareCard("snc")
+        prepareCard("khm")
+    }
+
+    private fun prepareCard(setCode: String) {
         mockServer
             .`when`(
                 request()
                     .withMethod(GET.name())
                     .withPath("/cards/search")
                     .withQueryStringParameter("order", "set")
-                    .withQueryStringParameter("q", "e:snc")
+                    .withQueryStringParameter("q", "e:$setCode")
                     .withQueryStringParameter("unique", "prints")
             )
             .respond(
                 response()
                     .withStatusCode(SC_OK)
                     .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                    .withBody(readFile("refresh/snc.json"))
+                    .withBody(readFile("refresh/$setCode.json"))
             )
     }
 

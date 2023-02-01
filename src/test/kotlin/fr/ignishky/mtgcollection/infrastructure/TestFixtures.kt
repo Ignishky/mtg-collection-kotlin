@@ -37,7 +37,16 @@ object TestFixtures {
     fun angelicObserver(): Card {
         return Card(
             CardId("e6cce4d3-e6d8-4c6f-9d9c-c0a8a607a42f"),
-            CardName("Angelic Observer")
+            CardName("Angelic Observer"),
+            SetCode("snc")
+        )
+    }
+
+    fun axgardBraggart(): Card {
+        return Card(
+            CardId("4de5ff64-6fe7-4fc5-be27-cdbaa14545ab"),
+            CardName("Axgard Braggart"),
+            SetCode("khm")
         )
     }
 

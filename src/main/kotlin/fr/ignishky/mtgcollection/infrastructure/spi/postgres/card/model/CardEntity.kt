@@ -9,9 +9,10 @@ import jakarta.persistence.Table
 data class CardEntity(
     @Id
     internal val id: String,
-    internal val name: String
+    internal val name: String,
+    internal val setCode: String
 ) {
 
-    constructor() : this("", "")
+    constructor() : this("", "", "")
 
 }

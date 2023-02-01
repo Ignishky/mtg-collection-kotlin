@@ -28,7 +28,7 @@ class ScryfallCardReferer(
             logger.warn { "Unable to get cards for ${code.value}" }
             listOf()
         }
-            .map { Card(CardId(it.id), CardName(it.name)) }
+            .map { Card(CardId(it.id), CardName(it.name), SetCode(it.set)) }
     }
 
 }

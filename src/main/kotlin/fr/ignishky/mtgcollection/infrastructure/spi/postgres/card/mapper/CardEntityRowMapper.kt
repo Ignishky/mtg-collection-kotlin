@@ -9,7 +9,8 @@ class CardEntityRowMapper : RowMapper<CardEntity> {
     override fun mapRow(rs: ResultSet, rowNum: Int): CardEntity {
         return CardEntity(
             rs.getString("id"),
-            rs.getString("name")
+            rs.getString("name"),
+            rs.getString("set_code")
         )
     }
 

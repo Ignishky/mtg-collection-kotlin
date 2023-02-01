@@ -9,11 +9,12 @@ data class ScryfallCard(
 
     data class ScryfallCardData(
         val id: String,
-        val name: String
+        val name: String,
+        val set: String
     ) {
 
         @Suppress("unused")
-        constructor() : this("", "")
+        constructor() : this("", "", "")
 
     }
 
