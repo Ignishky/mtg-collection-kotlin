@@ -9,10 +9,12 @@ import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.angelicObserver
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.plus2Mace
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.snc
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.valorSinger
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.mapper.CardEntityMapper.toCardEntity
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.mapper.SetEntityMapper.toSetEntity
@@ -49,10 +51,12 @@ internal class GlobalApiTest(
     private lateinit var mockServer: MockServerClient
 
     private val correlationId = CorrelationId("test-correlation-id")
-    private val setUpToDate = snc()
+    private val setUpToDate = afr()
     private val setToCreate = khm()
-    private val setUnmodified = afr()
-    private val card1ToCreate = angelicObserver()
+    private val setUnmodified = snc()
+    private val card1ToCreate = plus2Mace()
+    private val card2ToCreate = arboreaPegasus()
+    private val card3ToCreate = valorSinger()
     private val cardUnmodified = axgardBraggart()
 
     @BeforeEach
@@ -68,7 +72,7 @@ internal class GlobalApiTest(
         mockServerBuilder.prepareSets()
         mockServerBuilder.prepareCards()
         jdbc.save(
-            listOf(setUnmodified, setUpToDate.copy(name = SetName("Old Name"))),
+            listOf(setUpToDate.copy(name = SetName("Old Name"))),
             listOf(cardUnmodified)
         )
 
@@ -82,16 +86,19 @@ internal class GlobalApiTest(
             toSetUpdatedEntity(1, setUpToDate),
             toSetCreatedEntity(2, setToCreate),
             toCardCreatedEntity(3, card1ToCreate),
+            toCardCreatedEntity(4, card2ToCreate),
+            toCardCreatedEntity(5, card3ToCreate),
         )
 
         assertThat(jdbc.getSets()).containsOnly(
             toSetEntity(setUpToDate),
             toSetEntity(setToCreate),
-            toSetEntity(setUnmodified)
         )
 
         assertThat(jdbc.getCards()).containsOnly(
+            toCardEntity(card3ToCreate),
             toCardEntity(card1ToCreate),
+            toCardEntity(card2ToCreate),
             toCardEntity(cardUnmodified)
         )
     }
@@ -108,7 +115,7 @@ internal class GlobalApiTest(
         resultActions.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(readFile("refresh/setsResponse.json"), true)
+            content().json(readFile("refresh/setsResponse.json"))
         )
     }
 

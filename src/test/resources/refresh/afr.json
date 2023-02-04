@@ -2,7 +2,7 @@
   "object": "list",
   "total_cards": 3,
   "has_more": true,
-  "next_page": "https://api.scryfall.com/cards/search?format=json&include_extras=false&include_multilingual=false&include_variations=false&order=set&page=2&q=e%3Aafr&unique=prints",
+  "next_page": "{baseUrl}/cards/search?order=set&q=e:afr_page2&unique=prints",
   "data": [
     {
       "object": "card",

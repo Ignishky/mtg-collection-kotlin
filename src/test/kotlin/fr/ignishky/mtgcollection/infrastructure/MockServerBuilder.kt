@@ -9,7 +9,9 @@ import org.mockserver.model.HttpResponse.response
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
-class MockServerBuilder(private val mockServer: MockServerClient) {
+class MockServerBuilder(
+    private val mockServer: MockServerClient
+) {
 
     fun prepareSets() {
         mockServer
@@ -27,8 +29,9 @@ class MockServerBuilder(private val mockServer: MockServerClient) {
     }
 
     fun prepareCards() {
-        prepareCard("snc")
         prepareCard("khm")
+        prepareCard("afr")
+        prepareCard("afr_page2")
     }
 
     private fun prepareCard(setCode: String) {
@@ -45,7 +48,7 @@ class MockServerBuilder(private val mockServer: MockServerClient) {
                 response()
                     .withStatusCode(SC_OK)
                     .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                    .withBody(readFile("refresh/$setCode.json"))
+                    .withBody(readFile("refresh/$setCode.json").replace("{baseUrl}", "http://localhost:${mockServer.port}"))
             )
     }
 

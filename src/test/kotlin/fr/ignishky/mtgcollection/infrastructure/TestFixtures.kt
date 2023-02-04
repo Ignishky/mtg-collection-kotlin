@@ -34,11 +34,27 @@ object TestFixtures {
         )
     }
 
-    fun angelicObserver(): Card {
+    fun plus2Mace(): Card {
         return Card(
-            CardId("e6cce4d3-e6d8-4c6f-9d9c-c0a8a607a42f"),
-            CardName("Angelic Observer"),
-            SetCode("snc")
+            CardId("e882c9f9-bf30-46b6-bedc-379d2c80e5cb"),
+            CardName("+2 Mace"),
+            SetCode("afr")
+        )
+    }
+
+    fun arboreaPegasus(): Card {
+        return Card(
+            CardId("fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97"),
+            CardName("Arborea Pegasus"),
+            SetCode("afr")
+        )
+    }
+
+    fun valorSinger(): Card {
+        return Card(
+            CardId("89bc162c-bdf1-43f7-882f-d8cee4f3f415"),
+            CardName("Valor Singer"),
+            SetCode("afr")
         )
     }
 

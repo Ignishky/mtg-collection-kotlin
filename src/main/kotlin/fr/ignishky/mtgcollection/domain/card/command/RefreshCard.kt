@@ -27,14 +27,14 @@ class RefreshCard : Command {
 
         override fun handle(command: RefreshCard, correlationId: CorrelationId): List<Event<*, *, *>> {
             return setStorePort.getAll()
-                .map {
-                    logger.info { "Refreshing cards from ${it.code.value}" }
-                    Pair(cardRefererPort.getCards(it.code), cardStorePort.get(it.code).map { it.id })
+                .map { set ->
+                    logger.info { "Refreshing cards from ${set.code.value}" }
+                    Pair(cardRefererPort.getCards(set.code), cardStorePort.get(set.code).map { it.id })
                 }
-                .flatMap { pair ->
-                    pair.first.mapNotNull { card ->
-                        if (!pair.second.contains(card.id)) {
-                            CardCreated(card.id, card.name, card.setCode, clock)
+                .flatMap { (refererCards, knownCards) ->
+                    refererCards.mapNotNull { (id, name, setCode) ->
+                        if (!knownCards.contains(id)) {
+                            CardCreated(id, name, setCode, clock)
                         } else {
                             null
                         }
