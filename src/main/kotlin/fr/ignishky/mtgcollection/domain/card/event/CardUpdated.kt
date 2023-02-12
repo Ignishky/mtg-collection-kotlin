@@ -11,13 +11,21 @@ import mu.KotlinLogging
 import java.time.Clock
 import kotlin.reflect.KClass
 
-class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, collectionNumber: CollectionNumber, clock: Clock) :
+class CardUpdated(aggregateId: CardId, name: CardName, prices: Prices, images: List<CardImage>, collectionNumber: CollectionNumber, clock: Clock) :
     Event<CardId, Card, CardUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
-        CardUpdatedPayload(name.value, images.map { it.value }, collectionNumber.value),
-        clock.instant()
+        CardUpdatedPayload(
+            name.value,
+            prices.scryfall.eur,
+            prices.scryfall.eurFoil,
+            prices.scryfall.usd,
+            prices.scryfall.usdFoil,
+            images.map { it.value },
+            collectionNumber.value,
+        ),
+        clock.instant(),
     ) {
 
     override fun apply(aggregate: Card): Card {
@@ -25,15 +33,20 @@ class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, 
             aggregateId,
             CardName(payload.name),
             aggregate.setCode,
+            Prices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
             payload.images.map { CardImage(it) },
-            CollectionNumber(payload.collectionNumber)
+            CollectionNumber(payload.collectionNumber),
         )
     }
 
     data class CardUpdatedPayload(
         val name: String,
+        val scryfallEur: Long,
+        val scryfallEurFoil: Long,
+        val scryfallUsd: Long,
+        val scryfallUsdFoil: Long,
         val images: List<String>,
-        val collectionNumber: String
+        val collectionNumber: String,
     ) : Payload
 
     @Named

@@ -21,7 +21,7 @@ class RefreshCard : Command {
         private val setStorePort: SetStorePort,
         private val cardRefererPort: CardRefererPort,
         private val cardStorePort: CardStorePort,
-        private val clock: Clock
+        private val clock: Clock,
     ) : CommandHandler<RefreshCard> {
 
         private val logger = logger {}
@@ -33,14 +33,14 @@ class RefreshCard : Command {
                     Pair(cardRefererPort.getCards(set.code), cardStorePort.get(set.code).associateBy { it.id })
                 }
                 .flatMap { (refererCards, knownCards) ->
-                    refererCards.mapNotNull { (id, name, setCode, images, collectionNumber) ->
+                    refererCards.mapNotNull { (id, name, setCode, prices, images, collectionNumber) ->
                         if (!knownCards.contains(id)) {
-                            CardCreated(id, name, setCode, images, collectionNumber, clock)
+                            CardCreated(id, name, setCode, prices, images, collectionNumber, clock)
                         } else if (knownCards[id]!!.name != name
                             || knownCards[id]!!.collectionNumber != collectionNumber
                             || !knownCards[id]!!.images.containsAll(images)
                         ) {
-                            CardUpdated(id, name, images, collectionNumber, clock)
+                            CardUpdated(id, name, prices, images, collectionNumber, clock)
                         } else {
                             null
                         }

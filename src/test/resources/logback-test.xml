@@ -10,11 +10,9 @@
         </layout>
     </appender>
 
-    <logger name="org.mockserver" level="WARN" additivity="false">
-        <appender-ref ref="Console"/>
-    </logger>
+    <logger name="fr.ignishky" level="DEBUG" additivity="false"/>
 
-    <root level="INFO">
+    <root level="WARN">
         <appender-ref ref="Console"/>
     </root>
 

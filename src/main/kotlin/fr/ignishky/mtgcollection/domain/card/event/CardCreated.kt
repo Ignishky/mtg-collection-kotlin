@@ -12,13 +12,30 @@ import mu.KotlinLogging
 import java.time.Clock
 import kotlin.reflect.KClass
 
-class CardCreated(aggregateId: CardId, name: CardName, setCode: SetCode, images: List<CardImage>, collectionNumber: CollectionNumber, clock: Clock) :
+class CardCreated(
+    aggregateId: CardId,
+    name: CardName,
+    setCode: SetCode,
+    prices: Prices,
+    images: List<CardImage>,
+    collectionNumber: CollectionNumber,
+    clock: Clock,
+) :
     Event<CardId, Card, CardCreatedPayload>(
         0,
         aggregateId,
         Card::class,
-        CardCreatedPayload(name.value, setCode.value, images.map { it.value }, collectionNumber.value),
-        clock.instant()
+        CardCreatedPayload(
+            name.value,
+            setCode.value,
+            prices.scryfall.eur,
+            prices.scryfall.eurFoil,
+            prices.scryfall.usd,
+            prices.scryfall.usdFoil,
+            images.map { it.value },
+            collectionNumber.value,
+        ),
+        clock.instant(),
     ) {
 
     override fun apply(aggregate: Card): Card {
@@ -26,6 +43,7 @@ class CardCreated(aggregateId: CardId, name: CardName, setCode: SetCode, images:
             aggregateId,
             CardName(payload.name),
             SetCode(payload.setCode),
+            Prices(Price(payload.scryfallEur, payload.scryfallEurFoil, payload.scryfallUsd, payload.scryfallUsdFoil)),
             payload.images.map { CardImage(it) },
             CollectionNumber(payload.collectionNumber),
         )
@@ -34,12 +52,18 @@ class CardCreated(aggregateId: CardId, name: CardName, setCode: SetCode, images:
     data class CardCreatedPayload(
         val name: String,
         val setCode: String,
+        val scryfallEur: Long,
+        val scryfallEurFoil: Long,
+        val scryfallUsd: Long,
+        val scryfallUsdFoil: Long,
         val images: List<String>,
-        val collectionNumber: String
+        val collectionNumber: String,
     ) : Payload
 
     @Named
-    class CardCreatedHandler(private val cardStorePort: CardStorePort) : EventHandler<CardCreated> {
+    class CardCreatedHandler(
+        private val cardStorePort: CardStorePort
+    ) : EventHandler<CardCreated> {
 
         private val logger = KotlinLogging.logger {}
 

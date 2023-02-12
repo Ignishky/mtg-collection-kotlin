@@ -20,6 +20,7 @@ object TestFixtures {
             CardId("e882c9f9-bf30-46b6-bedc-379d2c80e5cb"),
             CardName("+2 Mace"),
             SetCode("afr"),
+            Prices(Price(2, 7, 2, 3)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg")),
             CollectionNumber("1"),
         )
@@ -30,6 +31,7 @@ object TestFixtures {
             CardId("fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97"),
             CardName("Arborea Pegasus"),
             SetCode("afr"),
+            Prices(Price(4, 8, 1, 6)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg")),
             CollectionNumber("2"),
         )
@@ -40,6 +42,7 @@ object TestFixtures {
             CardId("cdc86e78-8911-4a0d-ba3a-7802f8d991ef"),
             CardName("Flumph"),
             SetCode("afr"),
+            Prices(Price(5, 9, 2, 7)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/flumph.svg")),
             CollectionNumber("15")
         )
@@ -50,6 +53,7 @@ object TestFixtures {
             CardId("4e076b7f-14f3-4ce2-83f9-a18ccb2b755f"),
             CardName("Special Pegasus"),
             SetCode("afr"),
+            Prices(Price(6, 10, 3, 8)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/specialPegasus.svg")),
             CollectionNumber("S2"),
         )
@@ -69,6 +73,7 @@ object TestFixtures {
             CardId("89bc162c-bdf1-43f7-882f-d8cee4f3f415"),
             CardName("Valor Singer"),
             SetCode("afr"),
+            Prices(Price(1, 14, 1, 3)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/valorSinger.svg")),
             CollectionNumber("165"),
         )
@@ -79,6 +84,7 @@ object TestFixtures {
             CardId("4de5ff64-6fe7-4fc5-be27-cdbaa14545ab"),
             CardName("Axgard Braggart"),
             SetCode("khm"),
+            Prices(Price(1, 2, 1, 4)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/axgardBraggart.svg")),
             CollectionNumber("1"),
         )
@@ -89,6 +95,7 @@ object TestFixtures {
             CardId("97502411-5c93-434c-b77b-ceb2c32feae7"),
             CardName("Halvar, God of Battle // Sword of the Realms"),
             SetCode("khm"),
+            Prices(Price(796, 699, 692, 647)),
             listOf(CardImage("https://scryfall.mtgc.test/cards/halvar.svg"), CardImage("https://scryfall.mtgc.test/cards/swordOfTheRealms.svg")),
             CollectionNumber("15"),
         )

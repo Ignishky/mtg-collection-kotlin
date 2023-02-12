@@ -16,7 +16,9 @@ class CardPostgresStore(private val cardRepository: CardRepository) : CardStoreP
     }
 
     override fun get(id: CardId): Card {
-        return cardRepository.findById(id.value).map { toCard(it) }.get()
+        return cardRepository.findById(id.value)
+            .map { toCard(it) }
+            .get()
     }
 
     override fun get(code: SetCode): List<Card> {
