@@ -10,9 +10,10 @@ data class SetEntity(
     @Id
     internal val id: String,
     internal val code: String,
-    internal val name: String
+    internal val name: String,
+    internal val icon: String
 ) {
 
-    constructor() : this("", "", "")
+    constructor() : this("", "", "", "")
 
 }

@@ -10,11 +10,12 @@ data class ScryfallSet(
     data class ScryfallSetData(
         val id: String,
         val code: String,
-        val name: String
+        val name: String,
+        val icon_svg_uri: String
     ) {
 
         @Suppress("unused")
-        constructor() : this("", "", "")
+        constructor() : this("", "", "", "")
 
     }
 

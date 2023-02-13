@@ -10,7 +10,8 @@ class SetEntityRowMapper : RowMapper<SetEntity> {
         return SetEntity(
             rs.getString("id"),
             rs.getString("code"),
-            rs.getString("name")
+            rs.getString("name"),
+            rs.getString("icon")
         )
     }
 

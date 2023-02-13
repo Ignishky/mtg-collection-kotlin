@@ -2,11 +2,13 @@
   "sets": [
     {
       "code": "afr",
-      "name": "Adventures in the Forgotten Realms"
+      "name": "Adventures in the Forgotten Realms",
+      "icon": "https://scryfall.mtgc.test/sets/afr.svg"
     },
     {
       "code": "snc",
-      "name": "Streets of New Capenna"
+      "name": "Streets of New Capenna",
+      "icon": "https://scryfall.mtgc.test/sets/snc.svg"
     }
   ]
 }
