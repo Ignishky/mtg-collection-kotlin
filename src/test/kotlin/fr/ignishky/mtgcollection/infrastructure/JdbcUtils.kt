@@ -20,7 +20,15 @@ class JdbcUtils(private val template: JdbcTemplate) {
     }
 
     fun save(sets: List<Set>, cards: List<Card>) {
-        sets.map { template.update("INSERT INTO sets (id, code, name) VALUES (?, ?, ?)", it.id.value, it.code.value, it.name.value) }
+        sets.map {
+            template.update(
+                "INSERT INTO sets (id, code, name, icon) VALUES (?, ?, ?, ?)",
+                it.id.value,
+                it.code.value,
+                it.name.value,
+                it.icon.value
+            )
+        }
         cards.map { template.update("INSERT INTO cards (id, name, set_code) VALUES (?, ?, ?)", it.id.value, it.name.value, it.setCode.value) }
     }
 

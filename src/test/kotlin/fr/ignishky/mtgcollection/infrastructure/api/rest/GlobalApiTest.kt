@@ -5,6 +5,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.set.model.Set
+import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
@@ -72,7 +73,7 @@ internal class GlobalApiTest(
         mockServerBuilder.prepareSets()
         mockServerBuilder.prepareCards()
         jdbc.save(
-            listOf(setUpToDate.copy(name = SetName("Old Name"))),
+            listOf(setUpToDate.copy(name = SetName("Old Name"), icon = SetIcon(""))),
             listOf(cardUnmodified)
         )
 
@@ -126,7 +127,7 @@ internal class GlobalApiTest(
             "Set",
             "SetUpdated",
             Instant.parse("1981-08-25T13:50:00Z"),
-            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\"}",
+            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\",\"icon\":\"${set.icon.value}\"}",
             correlationId.value
         )
     }
@@ -138,7 +139,7 @@ internal class GlobalApiTest(
             "Set",
             "SetCreated",
             Instant.parse("1981-08-25T13:50:00Z"),
-            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\"}",
+            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\",\"icon\":\"${set.icon.value}\"}",
             correlationId.value
         )
     }

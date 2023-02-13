@@ -32,9 +32,9 @@ class RefreshSet : Command {
             return setRefererPort.getAllSets()
                 .mapNotNull {
                     if (knownSetsById[it.id] == null) {
-                        SetCreated(it.id, it.code, it.name, clock)
+                        SetCreated(it.id, it.code, it.name, it.icon, clock)
                     } else if (knownSetsById[it.id] != it) {
-                        SetUpdated(it.id, it.code, it.name, clock)
+                        SetUpdated(it.id, it.code, it.name, it.icon, clock)
                     } else {
                         null
                     }
