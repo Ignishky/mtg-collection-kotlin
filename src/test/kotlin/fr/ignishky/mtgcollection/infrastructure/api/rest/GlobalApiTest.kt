@@ -120,6 +120,22 @@ internal class GlobalApiTest(
         )
     }
 
+    @Test
+    fun `Should return cards from given set`() {
+        // GIVEN
+        jdbc.save(listOf(setUpToDate), listOf(card1ToCreate, card2ToCreate, cardUnmodified))
+
+        // WHEN
+        val resultActions = mockMvc.perform(get("/sets/afr"))
+
+        // THEN
+        resultActions.andExpectAll(
+            status().isOk,
+            content().contentType(APPLICATION_JSON),
+            content().json(readFile("refresh/cardsResponse.json"))
+        )
+    }
+
     fun toSetUpdatedEntity(id: Long, set: Set): EventEntity {
         return EventEntity(
             id,
