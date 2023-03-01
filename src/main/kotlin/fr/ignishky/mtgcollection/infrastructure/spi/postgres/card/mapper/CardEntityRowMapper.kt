@@ -10,7 +10,8 @@ class CardEntityRowMapper : RowMapper<CardEntity> {
         return CardEntity(
             rs.getString("id"),
             rs.getString("name"),
-            rs.getString("set_code")
+            rs.getString("set_code"),
+            rs.getString("images")
         )
     }
 

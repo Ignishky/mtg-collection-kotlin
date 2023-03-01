@@ -12,6 +12,7 @@ import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.axgardBraggart
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.halvar
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.plus2Mace
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.snc
@@ -56,9 +57,10 @@ internal class GlobalApiTest(
     private val setToCreate = khm()
     private val setUnmodified = snc()
     private val card1ToCreate = plus2Mace()
-    private val card2ToCreate = arboreaPegasus()
+    private val card2ToUpdate = arboreaPegasus()
     private val card3ToCreate = valorSinger()
     private val cardUnmodified = axgardBraggart()
+    private val card4ToCreate = halvar()
 
     @BeforeEach
     fun setUp() {
@@ -74,7 +76,7 @@ internal class GlobalApiTest(
         mockServerBuilder.prepareCards()
         jdbc.save(
             listOf(setUpToDate.copy(name = SetName("Old Name"), icon = SetIcon(""))),
-            listOf(cardUnmodified)
+            listOf(card2ToUpdate.copy(images = emptyList()), cardUnmodified)
         )
 
         // WHEN
@@ -87,8 +89,9 @@ internal class GlobalApiTest(
             toSetUpdatedEntity(1, setUpToDate),
             toSetCreatedEntity(2, setToCreate),
             toCardCreatedEntity(3, card1ToCreate),
-            toCardCreatedEntity(4, card2ToCreate),
+            toCardUpdatedEntity(4, card2ToUpdate),
             toCardCreatedEntity(5, card3ToCreate),
+            toCardCreatedEntity(6, card4ToCreate),
         )
 
         assertThat(jdbc.getSets()).containsOnly(
@@ -99,8 +102,9 @@ internal class GlobalApiTest(
         assertThat(jdbc.getCards()).containsOnly(
             toCardEntity(card3ToCreate),
             toCardEntity(card1ToCreate),
-            toCardEntity(card2ToCreate),
-            toCardEntity(cardUnmodified)
+            toCardEntity(card2ToUpdate),
+            toCardEntity(cardUnmodified),
+            toCardEntity(card4ToCreate)
         )
     }
 
@@ -123,7 +127,7 @@ internal class GlobalApiTest(
     @Test
     fun `Should return cards from given set`() {
         // GIVEN
-        jdbc.save(listOf(setUpToDate), listOf(card1ToCreate, card2ToCreate, cardUnmodified))
+        jdbc.save(listOf(setUpToDate), listOf(card1ToCreate, card2ToUpdate, cardUnmodified))
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/afr"))
@@ -167,7 +171,19 @@ internal class GlobalApiTest(
             "Card",
             "CardCreated",
             Instant.parse("1981-08-25T13:50:00Z"),
-            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\"}",
+            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
+            correlationId.value
+        )
+    }
+
+    fun toCardUpdatedEntity(id: Long, card: Card): EventEntity {
+        return EventEntity(
+            id,
+            card.id.value,
+            "Card",
+            "CardUpdated",
+            Instant.parse("1981-08-25T13:50:00Z"),
+            "{\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
             correlationId.value
         )
     }

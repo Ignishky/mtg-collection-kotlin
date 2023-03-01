@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 class JdbcUtils(private val template: JdbcTemplate) {
 
     fun dropAll() {
+        template.update("DELETE FROM events")
         template.update("DELETE FROM sets")
         template.update("DELETE FROM cards")
     }
@@ -29,7 +30,15 @@ class JdbcUtils(private val template: JdbcTemplate) {
                 it.icon.value
             )
         }
-        cards.map { template.update("INSERT INTO cards (id, name, set_code) VALUES (?, ?, ?)", it.id.value, it.name.value, it.setCode.value) }
+        cards.map {
+            template.update(
+                "INSERT INTO cards (id, name, set_code, images) VALUES (?, ?, ?, ?)",
+                it.id.value,
+                it.name.value,
+                it.setCode.value,
+                it.images.joinToString { image -> image.value }
+            )
+        }
     }
 
     fun getEvents(): List<EventEntity> {

@@ -2,6 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.mapper
 
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.model.CardImage
 import fr.ignishky.mtgcollection.domain.card.model.CardName
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.model.CardEntity
@@ -12,7 +13,8 @@ object CardEntityMapper {
         return CardEntity(
             card.id.value,
             card.name.value,
-            card.setCode.value
+            card.setCode.value,
+            card.images.joinToString { it.value }
         )
     }
 
@@ -20,7 +22,8 @@ object CardEntityMapper {
         return Card(
             CardId(entity.id),
             CardName(entity.name),
-            SetCode(entity.setCode)
+            SetCode(entity.setCode),
+            entity.images.split(",").map { CardImage(it) }
         )
     }
 

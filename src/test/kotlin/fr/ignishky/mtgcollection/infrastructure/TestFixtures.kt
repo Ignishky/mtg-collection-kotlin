@@ -2,6 +2,7 @@ package fr.ignishky.mtgcollection.infrastructure
 
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.model.CardImage
 import fr.ignishky.mtgcollection.domain.card.model.CardName
 import fr.ignishky.mtgcollection.domain.set.model.*
 import fr.ignishky.mtgcollection.domain.set.model.Set
@@ -39,7 +40,8 @@ object TestFixtures {
         return Card(
             CardId("e882c9f9-bf30-46b6-bedc-379d2c80e5cb"),
             CardName("+2 Mace"),
-            SetCode("afr")
+            SetCode("afr"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg"))
         )
     }
 
@@ -47,7 +49,8 @@ object TestFixtures {
         return Card(
             CardId("fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97"),
             CardName("Arborea Pegasus"),
-            SetCode("afr")
+            SetCode("afr"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg"))
         )
     }
 
@@ -55,7 +58,8 @@ object TestFixtures {
         return Card(
             CardId("89bc162c-bdf1-43f7-882f-d8cee4f3f415"),
             CardName("Valor Singer"),
-            SetCode("afr")
+            SetCode("afr"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/valorSinger.svg"))
         )
     }
 
@@ -63,7 +67,17 @@ object TestFixtures {
         return Card(
             CardId("4de5ff64-6fe7-4fc5-be27-cdbaa14545ab"),
             CardName("Axgard Braggart"),
-            SetCode("khm")
+            SetCode("khm"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/axgardBraggart.svg"))
+        )
+    }
+
+    fun halvar(): Card {
+        return Card(
+            CardId("97502411-5c93-434c-b77b-ceb2c32feae7"),
+            CardName("Halvar, God of Battle // Sword of the Realms"),
+            SetCode("khm"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/halvar.svg"), CardImage("https://scryfall.mtgc.test/cards/swordOfTheRealms.svg"))
         )
     }
 
