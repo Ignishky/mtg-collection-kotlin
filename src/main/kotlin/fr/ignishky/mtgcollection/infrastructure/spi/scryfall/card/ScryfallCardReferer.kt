@@ -3,6 +3,7 @@ package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 import fr.ignishky.mtgcollection.configuration.ScryfallProperties
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
+import fr.ignishky.mtgcollection.domain.card.model.CardImage
 import fr.ignishky.mtgcollection.domain.card.model.CardName
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
@@ -35,7 +36,13 @@ class ScryfallCardReferer(
             logger.warn("Unable to get cards for ${code.value}", e)
         }
 
-        return scryfallCards.map { Card(CardId(it.id), CardName(it.name), SetCode(it.set)) }
+        return scryfallCards.map {
+            val images = if (it.image_uris.border_crop != "") listOf(CardImage(it.image_uris.border_crop))
+            else it.card_faces
+                .map { (image_uris) -> image_uris.border_crop }
+                .map { crop -> CardImage(crop) }
+            Card(CardId(it.id), CardName(it.name), SetCode(it.set), images)
+        }
     }
 
 }

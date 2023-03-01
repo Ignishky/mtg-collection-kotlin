@@ -27,7 +27,7 @@
         "large": "https://cards.scryfall.io/large/front/e/8/e882c9f9-bf30-46b6-bedc-379d2c80e5cb.jpg?1627701221",
         "png": "https://cards.scryfall.io/png/front/e/8/e882c9f9-bf30-46b6-bedc-379d2c80e5cb.png?1627701221",
         "art_crop": "https://cards.scryfall.io/art_crop/front/e/8/e882c9f9-bf30-46b6-bedc-379d2c80e5cb.jpg?1627701221",
-        "border_crop": "https://cards.scryfall.io/border_crop/front/e/8/e882c9f9-bf30-46b6-bedc-379d2c80e5cb.jpg?1627701221"
+        "border_crop": "https://scryfall.mtgc.test/cards/plus2mace.svg"
       },
       "mana_cost": "{1}{W}",
       "cmc": 2.0,
@@ -154,7 +154,7 @@
         "large": "https://cards.scryfall.io/large/front/f/c/fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97.jpg?1627701260",
         "png": "https://cards.scryfall.io/png/front/f/c/fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97.png?1627701260",
         "art_crop": "https://cards.scryfall.io/art_crop/front/f/c/fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97.jpg?1627701260",
-        "border_crop": "https://cards.scryfall.io/border_crop/front/f/c/fc45c9d4-ecc7-4a9d-9efe-f4b7d697dd97.jpg?1627701260"
+        "border_crop": "https://scryfall.mtgc.test/cards/arboreaPegasus.svg"
       },
       "mana_cost": "{3}{W}",
       "cmc": 4.0,

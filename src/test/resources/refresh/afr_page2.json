@@ -28,7 +28,7 @@
         "large": "https://cards.scryfall.io/large/front/8/9/89bc162c-bdf1-43f7-882f-d8cee4f3f415.jpg?1627706895",
         "png": "https://cards.scryfall.io/png/front/8/9/89bc162c-bdf1-43f7-882f-d8cee4f3f415.png?1627706895",
         "art_crop": "https://cards.scryfall.io/art_crop/front/8/9/89bc162c-bdf1-43f7-882f-d8cee4f3f415.jpg?1627706895",
-        "border_crop": "https://cards.scryfall.io/border_crop/front/8/9/89bc162c-bdf1-43f7-882f-d8cee4f3f415.jpg?1627706895"
+        "border_crop": "https://scryfall.mtgc.test/cards/valorSinger.svg"
       },
       "mana_cost": "{2}{R}",
       "cmc": 3.0,
