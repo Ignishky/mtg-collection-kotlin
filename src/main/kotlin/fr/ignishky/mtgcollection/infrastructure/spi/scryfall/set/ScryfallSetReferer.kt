@@ -17,7 +17,14 @@ class ScryfallSetReferer(
     override fun getAllSets(): List<Set> {
         return restTemplate.getForObject<ScryfallSet>("${properties.baseUrl}/sets")
             .data
-            .map { Set(SetId(it.id), SetCode(it.code), SetName(it.name), SetIcon(it.icon_svg_uri)) }
+            .map {
+                Set(
+                    SetId(it.id),
+                    SetCode(it.code),
+                    SetName(it.name),
+                    SetIcon(it.icon_svg_uri.split("?")[0])
+                )
+            }
     }
 
 }
