@@ -1,10 +1,12 @@
 {
   "cards": [
     {
-      "name": "+2 Mace"
+      "name": "+2 Mace",
+      "image": "https://scryfall.mtgc.test/cards/plus2mace.svg"
     },
     {
-      "name": "Arborea Pegasus"
+      "name": "Arborea Pegasus",
+      "image": "https://scryfall.mtgc.test/cards/arboreaPegasus.svg"
     }
   ]
 }

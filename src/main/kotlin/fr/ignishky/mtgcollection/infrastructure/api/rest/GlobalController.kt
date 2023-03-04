@@ -36,7 +36,7 @@ internal class GlobalController(
     override fun getCards(correlationId: CorrelationId, setCode: String): CardsResponse {
         val cards = cardApiPort.getAll(SetCode(setCode))
         return CardsResponse(
-            cards.map { CardResponse(it.name.value) }
+            cards.map { CardResponse(it.name.value, it.images[0].value) }
         )
     }
 
