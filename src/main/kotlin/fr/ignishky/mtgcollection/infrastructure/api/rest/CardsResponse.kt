@@ -6,6 +6,7 @@ data class CardsResponse(
 
     data class CardResponse(
         val name: String,
+        val image: String
     )
 
 }
