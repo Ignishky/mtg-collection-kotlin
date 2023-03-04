@@ -69,6 +69,21 @@ internal class GlobalApiTest(
     }
 
     @Test
+    fun `Should not update set when icon change number`() {
+        val mockServerBuilder = MockServerBuilder(mockServer)
+        mockServerBuilder.prepareSets()
+        jdbc.save(
+            listOf(setToCreate, setUpToDate),
+            emptyList()
+        )
+
+        val resultActions = mockMvc.perform(put("/sets"))
+
+        resultActions.andExpect(status().isNoContent)
+        assertThat(jdbc.getEvents()).isEmpty()
+    }
+
+    @Test
     fun `Should load cards from scryfall`() {
         // GIVEN
         val mockServerBuilder = MockServerBuilder(mockServer)
