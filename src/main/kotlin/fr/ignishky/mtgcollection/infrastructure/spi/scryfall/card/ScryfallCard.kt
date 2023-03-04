@@ -1,8 +1,12 @@
 package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class ScryfallCard(
-    val has_more: Boolean,
-    val next_page: String,
+    @JsonProperty("has_more")
+    val hasMore: Boolean,
+    @JsonProperty("next_page")
+    val nextPage: String?,
     val data: List<ScryfallCardData>
 ) {
 
@@ -13,8 +17,10 @@ data class ScryfallCard(
         val id: String,
         val name: String,
         val set: String,
-        val image_uris: ImageUris,
-        val card_faces: List<CardFaces>
+        @JsonProperty("image_uris")
+        val imageUris: ImageUris?,
+        @JsonProperty("card_faces")
+        val cardFaces: List<CardFaces>?
     ) {
 
         @Suppress("unused")
@@ -23,7 +29,8 @@ data class ScryfallCard(
     }
 
     data class ImageUris(
-        val border_crop: String
+        @JsonProperty("border_crop")
+        val borderCrop: String
     ) {
 
         @Suppress("unused")
@@ -32,7 +39,8 @@ data class ScryfallCard(
     }
 
     data class CardFaces(
-        val image_uris: ImageUris
+        @JsonProperty("image_uris")
+        val imageUris: ImageUris
     ) {
 
         @Suppress("unused")

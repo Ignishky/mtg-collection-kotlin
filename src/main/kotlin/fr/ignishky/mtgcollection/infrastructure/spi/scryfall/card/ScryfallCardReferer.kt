@@ -28,8 +28,8 @@ class ScryfallCardReferer(
             var response = restTemplate.getForObject<ScryfallCard>("${properties.baseUrl}/cards/search?order=set&q=e:${code.value}&unique=prints")
             scryfallCards = scryfallCards.plus(response.data)
 
-            while (response.has_more) {
-                response = restTemplate.getForObject(response.next_page.replace("%3A", ":"))
+            while (response.hasMore) {
+                response = restTemplate.getForObject(response.nextPage?.replace("%3A", ":") ?: "")
                 scryfallCards = scryfallCards.plus(response.data)
             }
         } catch (e: NotFound) {
@@ -37,10 +37,11 @@ class ScryfallCardReferer(
         }
 
         return scryfallCards.map {
-            val images = if (it.image_uris.border_crop != "") listOf(CardImage(it.image_uris.border_crop))
-            else it.card_faces
-                .map { (image_uris) -> image_uris.border_crop }
-                .map { crop -> CardImage(crop) }
+            val images = if (it.imageUris != null) listOf(CardImage(it.imageUris.borderCrop))
+            else it.cardFaces
+                ?.map { (imageUris) -> imageUris.borderCrop }
+                ?.map { crop -> CardImage(crop) }
+                ?: emptyList()
             Card(CardId(it.id), CardName(it.name), SetCode(it.set), images)
         }
     }

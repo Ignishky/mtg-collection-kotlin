@@ -22,7 +22,7 @@ class ScryfallSetReferer(
                     SetId(it.id),
                     SetCode(it.code),
                     SetName(it.name),
-                    SetIcon(it.icon_svg_uri.split("?")[0])
+                    SetIcon(it.iconSvgUri.split("?")[0])
                 )
             }
     }

@@ -1,5 +1,7 @@
 package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.set
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class ScryfallSet(
     val data: List<ScryfallSetData>
 ) {
@@ -11,7 +13,8 @@ data class ScryfallSet(
         val id: String,
         val code: String,
         val name: String,
-        val icon_svg_uri: String
+        @JsonProperty("icon_svg_uri")
+        val iconSvgUri: String
     ) {
 
         @Suppress("unused")
