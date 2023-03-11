@@ -15,9 +15,9 @@ import org.springframework.jdbc.core.JdbcTemplate
 class JdbcUtils(private val template: JdbcTemplate) {
 
     fun dropAll() {
-        template.update("DELETE FROM events")
-        template.update("DELETE FROM sets")
-        template.update("DELETE FROM cards")
+        template.execute("TRUNCATE TABLE events")
+        template.execute("TRUNCATE TABLE sets")
+        template.execute("TRUNCATE TABLE cards")
     }
 
     fun save(sets: List<Set>, cards: List<Card>) {

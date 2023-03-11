@@ -4,9 +4,9 @@ import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.mtgcollection.domain.card.model.Card
+import fr.ignishky.mtgcollection.domain.card.model.CardName
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
-import fr.ignishky.mtgcollection.domain.set.model.SetName
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.MockServerBuilder
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
@@ -15,9 +15,7 @@ import fr.ignishky.mtgcollection.infrastructure.TestFixtures.axgardBraggart
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.halvar
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.plus2Mace
-import fr.ignishky.mtgcollection.infrastructure.TestFixtures.snc
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.valorSinger
-import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.card.mapper.CardEntityMapper.toCardEntity
 import fr.ignishky.mtgcollection.infrastructure.spi.postgres.set.mapper.SetEntityMapper.toSetEntity
 import org.assertj.core.api.Assertions.assertThat
@@ -30,20 +28,17 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.Instant
+import java.time.Instant.parse
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
-internal class GlobalApiTest(
+class RefreshApiTest(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val jdbc: JdbcUtils,
 ) {
@@ -53,14 +48,13 @@ internal class GlobalApiTest(
     private lateinit var mockServer: MockServerClient
 
     private val correlationId = CorrelationId("test-correlation-id")
-    private val setUpToDate = afr()
-    private val setToCreate = khm()
-    private val setUnmodified = snc()
-    private val card1ToCreate = plus2Mace()
-    private val card2ToUpdate = arboreaPegasus()
-    private val card3ToCreate = valorSinger()
-    private val cardUnmodified = axgardBraggart()
-    private val card4ToCreate = halvar()
+    private val khm = khm()
+    private val axgardBraggart = axgardBraggart()
+    private val halvar = halvar()
+    private val afr = afr()
+    private val plus2mace = plus2Mace()
+    private val arboreaPegasus = arboreaPegasus()
+    private val valor = valorSinger()
 
     @BeforeEach
     fun setUp() {
@@ -69,136 +63,128 @@ internal class GlobalApiTest(
     }
 
     @Test
-    fun `Should not update set when icon change number`() {
+    fun `Should create new set and cards`() {
         val mockServerBuilder = MockServerBuilder(mockServer)
-        mockServerBuilder.prepareSets()
-        jdbc.save(
-            listOf(setToCreate, setUpToDate),
-            emptyList()
-        )
+        mockServerBuilder.prepareSets("scryfall_set_khm.json")
+        mockServerBuilder.prepareCards("khm")
+
+        val resultActions = mockMvc.perform(put("/sets"))
+
+        resultActions.andExpect(status().isNoContent)
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+            .containsOnly(
+                toSetCreatedEntity(khm),
+                toCardCreatedEntity(axgardBraggart),
+                toCardCreatedEntity(halvar),
+            )
+        assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
+        assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
+    }
+
+    @Test
+    fun `Should skip update of unmodified set and cards`() {
+        val mockServerBuilder = MockServerBuilder(mockServer)
+        mockServerBuilder.prepareSets("scryfall_set_khm.json")
+        mockServerBuilder.prepareCards("khm")
+        jdbc.save(listOf(khm), listOf(axgardBraggart, halvar))
 
         val resultActions = mockMvc.perform(put("/sets"))
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents()).isEmpty()
+        assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
+        assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
 
     @Test
-    fun `Should load cards from scryfall`() {
-        // GIVEN
+    fun `Should update modified set and cards`() {
         val mockServerBuilder = MockServerBuilder(mockServer)
-        mockServerBuilder.prepareSets()
-        mockServerBuilder.prepareCards()
+        mockServerBuilder.prepareSets("scryfall_set_khm.json")
+        mockServerBuilder.prepareCards("khm")
         jdbc.save(
-            listOf(setUpToDate.copy(name = SetName("Old Name"), icon = SetIcon(""))),
-            listOf(card2ToUpdate.copy(images = emptyList()), cardUnmodified)
+            listOf(khm.copy(icon = SetIcon("Old Icon"))),
+            listOf(
+                axgardBraggart.copy(name = CardName("Old Name")),
+                halvar.copy(images = emptyList())
+            )
         )
 
-        // WHEN
         val resultActions = mockMvc.perform(put("/sets"))
 
-        // THEN
         resultActions.andExpect(status().isNoContent)
-
-        assertThat(jdbc.getEvents()).containsOnly(
-            toSetUpdatedEntity(1, setUpToDate),
-            toSetCreatedEntity(2, setToCreate),
-            toCardCreatedEntity(3, card1ToCreate),
-            toCardUpdatedEntity(4, card2ToUpdate),
-            toCardCreatedEntity(5, card3ToCreate),
-            toCardCreatedEntity(6, card4ToCreate),
-        )
-
-        assertThat(jdbc.getSets()).containsOnly(
-            toSetEntity(setUpToDate),
-            toSetEntity(setToCreate),
-        )
-
-        assertThat(jdbc.getCards()).containsOnly(
-            toCardEntity(card3ToCreate),
-            toCardEntity(card1ToCreate),
-            toCardEntity(card2ToUpdate),
-            toCardEntity(cardUnmodified),
-            toCardEntity(card4ToCreate)
-        )
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+            .containsOnly(toSetUpdatedEntity(khm), toCardUpdatedEntity(axgardBraggart), toCardUpdatedEntity(halvar))
+        assertThat(jdbc.getSets()).containsOnly(toSetEntity(khm))
+        assertThat(jdbc.getCards()).containsOnly(toCardEntity(axgardBraggart), toCardEntity(halvar))
     }
 
     @Test
-    fun `Should return sets`() {
-        // GIVEN
-        jdbc.save(listOf(setUnmodified, setUpToDate), listOf())
+    fun `Should handle multiple pages of cards`() {
+        val mockServerBuilder = MockServerBuilder(mockServer)
+        mockServerBuilder.prepareSets("scryfall_set_afr.json")
+        mockServerBuilder.prepareCards("afr", "afr_page2")
 
-        // WHEN
-        val resultActions = mockMvc.perform(get("/sets"))
+        val resultActions = mockMvc.perform(put("/sets"))
 
-        // THEN
-        resultActions.andExpectAll(
-            status().isOk,
-            content().contentType(APPLICATION_JSON),
-            content().json(readFile("refresh/setsResponse.json"))
-        )
+        resultActions.andExpect(status().isNoContent)
+        assertThat(jdbc.getEvents())
+            .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+            .containsOnly(
+                toSetCreatedEntity(afr),
+                toCardCreatedEntity(plus2mace),
+                toCardCreatedEntity(arboreaPegasus),
+                toCardCreatedEntity(valor),
+            )
+        assertThat(jdbc.getSets()).containsOnly(toSetEntity(afr))
+        assertThat(jdbc.getCards()).containsOnly(toCardEntity(plus2mace), toCardEntity(arboreaPegasus), toCardEntity(valor))
     }
 
-    @Test
-    fun `Should return cards from given set`() {
-        // GIVEN
-        jdbc.save(listOf(setUpToDate), listOf(card1ToCreate, card2ToUpdate, cardUnmodified))
-
-        // WHEN
-        val resultActions = mockMvc.perform(get("/sets/afr"))
-
-        // THEN
-        resultActions.andExpectAll(
-            status().isOk,
-            content().contentType(APPLICATION_JSON),
-            content().json(readFile("refresh/cardsResponse.json"))
-        )
-    }
-
-    fun toSetUpdatedEntity(id: Long, set: Set): EventEntity {
+    fun toSetCreatedEntity(set: Set): EventEntity {
         return EventEntity(
-            id,
-            set.id.value,
-            "Set",
-            "SetUpdated",
-            Instant.parse("1981-08-25T13:50:00Z"),
-            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\",\"icon\":\"${set.icon.value}\"}",
-            correlationId.value
-        )
-    }
-
-    fun toSetCreatedEntity(id: Long, set: Set): EventEntity {
-        return EventEntity(
-            id,
+            0,
             set.id.value,
             "Set",
             "SetCreated",
-            Instant.parse("1981-08-25T13:50:00Z"),
+            parse("1981-08-25T13:50:00Z"),
             "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\",\"icon\":\"${set.icon.value}\"}",
             correlationId.value
         )
     }
 
-    fun toCardCreatedEntity(id: Long, card: Card): EventEntity {
+    fun toSetUpdatedEntity(set: Set): EventEntity {
         return EventEntity(
-            id,
+            0,
+            set.id.value,
+            "Set",
+            "SetUpdated",
+            parse("1981-08-25T13:50:00Z"),
+            "{\"code\":\"${set.code.value}\",\"name\":\"${set.name.value}\",\"icon\":\"${set.icon.value}\"}",
+            correlationId.value
+        )
+    }
+
+    fun toCardCreatedEntity(card: Card): EventEntity {
+        return EventEntity(
+            0,
             card.id.value,
             "Card",
             "CardCreated",
-            Instant.parse("1981-08-25T13:50:00Z"),
+            parse("1981-08-25T13:50:00Z"),
             "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
             correlationId.value
         )
     }
 
-    fun toCardUpdatedEntity(id: Long, card: Card): EventEntity {
+    fun toCardUpdatedEntity(card: Card): EventEntity {
         return EventEntity(
-            id,
+            0,
             card.id.value,
             "Card",
             "CardUpdated",
-            Instant.parse("1981-08-25T13:50:00Z"),
-            "{\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
+            parse("1981-08-25T13:50:00Z"),
+            "{\"name\":\"${card.name.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
             correlationId.value
         )
     }

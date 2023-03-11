@@ -9,15 +9,6 @@ import fr.ignishky.mtgcollection.domain.set.model.Set
 
 object TestFixtures {
 
-    fun snc(): Set {
-        return Set(
-            SetId("df837242-8c15-42e4-b049-c933a02dc501"),
-            SetCode("snc"),
-            SetName("Streets of New Capenna"),
-            SetIcon("https://scryfall.mtgc.test/sets/snc.svg")
-        )
-    }
-
     fun afr(): Set {
         return Set(
             SetId("e1ef87ba-ba92-4573-817f-543b996d2851"),

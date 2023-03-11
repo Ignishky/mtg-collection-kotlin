@@ -23,7 +23,7 @@ object CardEntityMapper {
             CardId(entity.id),
             CardName(entity.name),
             SetCode(entity.setCode),
-            entity.images.split(",").map { CardImage(it) }
+            entity.images.split(", ").map { CardImage(it) }
         )
     }
 

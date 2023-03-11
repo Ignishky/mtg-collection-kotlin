@@ -13,7 +13,7 @@ class MockServerBuilder(
     private val mockServer: MockServerClient
 ) {
 
-    fun prepareSets() {
+    fun prepareSets(fileName: String) {
         mockServer
             .`when`(
                 request()
@@ -24,32 +24,29 @@ class MockServerBuilder(
                 response()
                     .withStatusCode(SC_OK)
                     .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                    .withBody(readFile("refresh/sets.json"))
+                    .withBody(readFile("refresh/${fileName}"))
             )
     }
 
-    fun prepareCards() {
-        prepareCard("khm")
-        prepareCard("afr")
-        prepareCard("afr_page2")
-    }
+    fun prepareCards(vararg setCode: String) {
+        setCode.forEach {
+            mockServer
+                .`when`(
+                    request()
+                        .withMethod(GET.name())
+                        .withPath("/cards/search")
+                        .withQueryStringParameter("order", "set")
+                        .withQueryStringParameter("q", "e:$it")
+                        .withQueryStringParameter("unique", "prints")
+                )
+                .respond(
+                    response()
+                        .withStatusCode(SC_OK)
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                        .withBody(readFile("refresh/scryfall_cards_$it.json").replace("{baseUrl}", "http://localhost:${mockServer.port}"))
+                )
+        }
 
-    private fun prepareCard(setCode: String) {
-        mockServer
-            .`when`(
-                request()
-                    .withMethod(GET.name())
-                    .withPath("/cards/search")
-                    .withQueryStringParameter("order", "set")
-                    .withQueryStringParameter("q", "e:$setCode")
-                    .withQueryStringParameter("unique", "prints")
-            )
-            .respond(
-                response()
-                    .withStatusCode(SC_OK)
-                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                    .withBody(readFile("refresh/$setCode.json").replace("{baseUrl}", "http://localhost:${mockServer.port}"))
-            )
     }
 
 }

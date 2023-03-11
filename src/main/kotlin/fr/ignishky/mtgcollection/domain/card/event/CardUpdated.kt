@@ -7,26 +7,28 @@ import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayloa
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardId
 import fr.ignishky.mtgcollection.domain.card.model.CardImage
+import fr.ignishky.mtgcollection.domain.card.model.CardName
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Clock
 import kotlin.reflect.KClass
 
-class CardUpdated(aggregateId: CardId, images: List<CardImage>, clock: Clock) :
+class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, clock: Clock) :
     Event<CardId, Card, CardUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
-        CardUpdatedPayload(images.map { it.value }),
+        CardUpdatedPayload(name.value, images.map { it.value }),
         clock.instant()
     ) {
 
     override fun apply(aggregate: Card): Card {
-        return Card(aggregateId, aggregate.name, aggregate.setCode, payload.images.map { CardImage(it) })
+        return Card(aggregateId, CardName(payload.name), aggregate.setCode, payload.images.map { CardImage(it) })
     }
 
     data class CardUpdatedPayload(
+        val name: String,
         val images: List<String>
     ) : Payload
 

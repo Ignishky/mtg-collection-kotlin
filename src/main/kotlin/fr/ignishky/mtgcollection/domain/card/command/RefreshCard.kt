@@ -36,8 +36,8 @@ class RefreshCard : Command {
                     refererCards.mapNotNull { (id, name, setCode, images) ->
                         if (!knownCards.contains(id)) {
                             CardCreated(id, name, setCode, images, clock)
-                        } else if (knownCards[id]?.images != images) {
-                            CardUpdated(id, images, clock)
+                        } else if (knownCards[id]!!.name != name || !knownCards[id]!!.images.containsAll(images)) {
+                            CardUpdated(id, name, images, clock)
                         } else {
                             null
                         }
