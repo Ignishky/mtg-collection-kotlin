@@ -42,7 +42,7 @@ data class ScryfallCard(
 
     data class CardFaces(
         @JsonProperty("image_uris")
-        val imageUris: ImageUris
+        val imageUris: ImageUris?
     ) {
 
         @Suppress("unused")
