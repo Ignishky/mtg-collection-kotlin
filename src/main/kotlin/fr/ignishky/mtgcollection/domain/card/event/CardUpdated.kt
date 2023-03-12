@@ -42,7 +42,7 @@ class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, 
         private val logger = KotlinLogging.logger {}
 
         override fun handle(event: CardUpdated) {
-            logger.info { "Updating card '${event.aggregateId}'..." }
+            logger.info { "Updating card '${event.payload.name}'..." }
             cardStorePort.store(event.apply(cardStorePort.get(event.aggregateId)))
         }
 
