@@ -6,7 +6,12 @@ data class CardsResponse(
 
     data class CardResponse(
         val name: String,
-        val image: String
+        val image: String,
+        val prices: PricesResponse,
     )
 
+    data class PricesResponse(
+        val eur: Long,
+        val eurFoil: Long,
+    )
 }

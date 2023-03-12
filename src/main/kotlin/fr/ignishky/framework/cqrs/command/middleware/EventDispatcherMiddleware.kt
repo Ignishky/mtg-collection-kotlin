@@ -24,7 +24,7 @@ class EventDispatcherMiddleware(
     override fun handle(command: Command, correlationId: CorrelationId): List<Event<*, *, *>> {
         val events = next(command, correlationId)
 
-        events.forEach {
+        events.parallelStream().forEach {
             when (it) {
                 is SetCreated -> (handlersByEvent[it::class] as SetCreatedHandler).handle(it)
                 is SetUpdated -> (handlersByEvent[it::class] as SetUpdatedHandler).handle(it)

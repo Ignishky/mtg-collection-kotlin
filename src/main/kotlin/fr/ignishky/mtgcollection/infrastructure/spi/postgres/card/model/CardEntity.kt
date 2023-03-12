@@ -11,10 +11,14 @@ data class CardEntity(
     internal val id: String,
     internal val name: String,
     internal val setCode: String,
+    internal val scryfallEur: Long,
+    internal val scryfallEurFoil: Long,
+    internal val scryfallUsd: Long,
+    internal val scryfallUsdFoil: Long,
     internal val images: String,
-    internal val collectionNumber: String
+    internal val collectionNumber: String,
 ) {
 
-    constructor() : this("", "", "", "", "")
+    constructor() : this("", "", "", 0, 0, 0, 0, "", "")
 
 }

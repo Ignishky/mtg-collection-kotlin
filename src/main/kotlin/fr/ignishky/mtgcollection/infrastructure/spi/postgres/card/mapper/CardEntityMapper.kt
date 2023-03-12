@@ -11,6 +11,10 @@ object CardEntityMapper {
             card.id.value,
             card.name.value,
             card.setCode.value,
+            card.prices.scryfall.eur,
+            card.prices.scryfall.eurFoil,
+            card.prices.scryfall.usd,
+            card.prices.scryfall.usdFoil,
             card.images.joinToString { it.value },
             card.collectionNumber.value,
         )
@@ -21,6 +25,7 @@ object CardEntityMapper {
             CardId(entity.id),
             CardName(entity.name),
             SetCode(entity.setCode),
+            Prices(Price(entity.scryfallEur, entity.scryfallEurFoil, entity.scryfallUsd, entity.scryfallUsdFoil)),
             entity.images.split(", ").map { CardImage(it) },
             CollectionNumber(entity.collectionNumber),
         )

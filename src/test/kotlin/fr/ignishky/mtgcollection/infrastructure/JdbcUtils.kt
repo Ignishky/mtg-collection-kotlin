@@ -27,15 +27,19 @@ class JdbcUtils(private val template: JdbcTemplate) {
                 it.id.value,
                 it.code.value,
                 it.name.value,
-                it.icon.value
+                it.icon.value,
             )
         }
         cards.map {
             template.update(
-                "INSERT INTO cards (id, name, set_code, images, collection_number) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO cards (id, name, set_code, scryfall_eur, scryfall_eur_foil, scryfall_usd, scryfall_usd_foil, images, collection_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
+                it.prices.scryfall.eur,
+                it.prices.scryfall.eurFoil,
+                it.prices.scryfall.usd,
+                it.prices.scryfall.usdFoil,
                 it.images.joinToString { (value) -> value },
                 it.collectionNumber.value,
             )

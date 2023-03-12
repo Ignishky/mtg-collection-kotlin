@@ -7,7 +7,7 @@ data class ScryfallCard(
     val hasMore: Boolean,
     @JsonProperty("next_page")
     val nextPage: String?,
-    val data: List<ScryfallCardData>
+    val data: List<ScryfallCardData>,
 ) {
 
     @Suppress("unused")
@@ -17,6 +17,7 @@ data class ScryfallCard(
         val id: String,
         val name: String,
         val set: String,
+        val prices: ScryfallPrices,
         @JsonProperty("image_uris")
         val imageUris: ImageUris?,
         @JsonProperty("card_faces")
@@ -26,13 +27,33 @@ data class ScryfallCard(
     ) {
 
         @Suppress("unused")
-        constructor() : this("", "", "", ImageUris(""), emptyList(), "")
+        constructor() : this(
+            "",
+            "",
+            "",
+            ScryfallPrices("0", "0", "0", "0"),
+            ImageUris(""),
+            emptyList(),
+            "",
+        )
+
+    }
+
+    data class ScryfallPrices(
+        val eur: String,
+        val eur_foil: String,
+        val usd: String,
+        val usd_foil: String,
+    ) {
+
+        @Suppress("unused")
+        constructor() : this("", "", "", "")
 
     }
 
     data class ImageUris(
         @JsonProperty("border_crop")
-        val borderCrop: String
+        val borderCrop: String,
     ) {
 
         @Suppress("unused")
@@ -42,7 +63,7 @@ data class ScryfallCard(
 
     data class CardFaces(
         @JsonProperty("image_uris")
-        val imageUris: ImageUris?
+        val imageUris: ImageUris?,
     ) {
 
         @Suppress("unused")

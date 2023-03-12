@@ -9,6 +9,7 @@ import mu.KotlinLogging.logger
 import org.springframework.web.client.HttpClientErrorException.NotFound
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
+import java.lang.Long.parseLong
 
 @Named
 class ScryfallCardReferer(
@@ -41,7 +42,21 @@ class ScryfallCardReferer(
                 ?.map { (imageUris) -> imageUris?.borderCrop ?: "".split("?")[0] }
                 ?.map { crop -> CardImage(crop) }
                 ?: emptyList()
-            Card(CardId(it.id), CardName(it.name), SetCode(it.set), images, CollectionNumber(it.collectionNumber))
+            Card(
+                CardId(it.id),
+                CardName(it.name),
+                SetCode(it.set),
+                Prices(
+                    Price(
+                        parseLong(it.prices.eur.replace(".", "")),
+                        parseLong(it.prices.eur_foil.replace(".", "")),
+                        parseLong(it.prices.usd.replace(".", "")),
+                        parseLong(it.prices.usd_foil.replace(".", "")),
+                    ),
+                ),
+                images,
+                CollectionNumber(it.collectionNumber),
+            )
         }
     }
 

@@ -8,6 +8,7 @@ import fr.ignishky.mtgcollection.domain.set.command.RefreshSet
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import fr.ignishky.mtgcollection.domain.set.port.SetApiPort
 import fr.ignishky.mtgcollection.infrastructure.api.rest.CardsResponse.CardResponse
+import fr.ignishky.mtgcollection.infrastructure.api.rest.CardsResponse.PricesResponse
 import fr.ignishky.mtgcollection.infrastructure.api.rest.SetsResponse.SetResponse
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
@@ -36,7 +37,7 @@ internal class GlobalController(
     override fun getCards(correlationId: CorrelationId, setCode: String): CardsResponse {
         val cards = cardApiPort.getAll(SetCode(setCode))
         return CardsResponse(
-            cards.map { CardResponse(it.name.value, it.images[0].value) }
+            cards.map { CardResponse(it.name.value, it.images[0].value, PricesResponse(it.prices.scryfall.eur, it.prices.scryfall.eurFoil)) }
         )
     }
 
