@@ -1,2 +1,2 @@
 ALTER TABLE cards
-    ADD COLUMN collection_number NUMERIC not null default 0
+    ADD COLUMN collection_number VARCHAR not null default ''

@@ -12,7 +12,7 @@ class CardEntityRowMapper : RowMapper<CardEntity> {
             rs.getString("name"),
             rs.getString("set_code"),
             rs.getString("images"),
-            rs.getInt("collection_number"),
+            rs.getString("collection_number"),
         )
     }
 

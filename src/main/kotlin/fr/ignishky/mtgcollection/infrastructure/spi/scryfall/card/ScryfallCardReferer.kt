@@ -38,7 +38,7 @@ class ScryfallCardReferer(
         return scryfallCards.map {
             val images = if (it.imageUris != null) listOf(CardImage(it.imageUris.borderCrop.split("?")[0]))
             else it.cardFaces
-                ?.map { (imageUris) -> imageUris?.borderCrop!!.split("?")[0] }
+                ?.map { (imageUris) -> imageUris?.borderCrop ?: "".split("?")[0] }
                 ?.map { crop -> CardImage(crop) }
                 ?: emptyList()
             Card(CardId(it.id), CardName(it.name), SetCode(it.set), images, CollectionNumber(it.collectionNumber))

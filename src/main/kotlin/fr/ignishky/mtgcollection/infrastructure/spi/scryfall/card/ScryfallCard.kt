@@ -22,11 +22,11 @@ data class ScryfallCard(
         @JsonProperty("card_faces")
         val cardFaces: List<CardFaces>?,
         @JsonProperty("collector_number")
-        val collectionNumber: Int,
+        val collectionNumber: String,
     ) {
 
         @Suppress("unused")
-        constructor() : this("", "", "", ImageUris(""), emptyList(), 0)
+        constructor() : this("", "", "", ImageUris(""), emptyList(), "")
 
     }
 

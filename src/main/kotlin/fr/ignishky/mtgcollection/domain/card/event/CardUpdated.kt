@@ -33,7 +33,7 @@ class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, 
     data class CardUpdatedPayload(
         val name: String,
         val images: List<String>,
-        val collectionNumber: Int
+        val collectionNumber: String
     ) : Payload
 
     @Named

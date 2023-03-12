@@ -35,7 +35,7 @@ class CardCreated(aggregateId: CardId, name: CardName, setCode: SetCode, images:
         val name: String,
         val setCode: String,
         val images: List<String>,
-        val collectionNumber: Int
+        val collectionNumber: String
     ) : Payload
 
     @Named

@@ -21,7 +21,7 @@ object TestFixtures {
             CardName("+2 Mace"),
             SetCode("afr"),
             listOf(CardImage("https://scryfall.mtgc.test/cards/plus2mace.svg")),
-            CollectionNumber(1),
+            CollectionNumber("1"),
         )
     }
 
@@ -31,7 +31,7 @@ object TestFixtures {
             CardName("Arborea Pegasus"),
             SetCode("afr"),
             listOf(CardImage("https://scryfall.mtgc.test/cards/arboreaPegasus.svg")),
-            CollectionNumber(2),
+            CollectionNumber("2"),
         )
     }
 
@@ -50,7 +50,7 @@ object TestFixtures {
             CardName("Valor Singer"),
             SetCode("afr"),
             listOf(CardImage("https://scryfall.mtgc.test/cards/valorSinger.svg")),
-            CollectionNumber(165),
+            CollectionNumber("165"),
         )
     }
 
@@ -60,7 +60,7 @@ object TestFixtures {
             CardName("Axgard Braggart"),
             SetCode("khm"),
             listOf(CardImage("https://scryfall.mtgc.test/cards/axgardBraggart.svg")),
-            CollectionNumber(1),
+            CollectionNumber("1"),
         )
     }
 
@@ -70,7 +70,7 @@ object TestFixtures {
             CardName("Halvar, God of Battle // Sword of the Realms"),
             SetCode("khm"),
             listOf(CardImage("https://scryfall.mtgc.test/cards/halvar.svg"), CardImage("https://scryfall.mtgc.test/cards/swordOfTheRealms.svg")),
-            CollectionNumber(15),
+            CollectionNumber("15"),
         )
     }
 

@@ -107,7 +107,7 @@ class RefreshApiTest(
             listOf(khm.copy(icon = SetIcon("Old Icon"))),
             listOf(
                 axgardBraggart.copy(name = CardName("Old Name")),
-                halvar.copy(images = emptyList(), collectionNumber = CollectionNumber(-1))
+                halvar.copy(images = emptyList(), collectionNumber = CollectionNumber(""))
             )
         )
 
@@ -173,7 +173,7 @@ class RefreshApiTest(
             "Card",
             "CardCreated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}],\"collectionNumber\":${card.collectionNumber.value}}",
+            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}],\"collectionNumber\":\"${card.collectionNumber.value}\"}",
             correlationId.value
         )
     }
@@ -185,7 +185,7 @@ class RefreshApiTest(
             "Card",
             "CardUpdated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"name\":\"${card.name.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}],\"collectionNumber\":${card.collectionNumber.value}}",
+            "{\"name\":\"${card.name.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}],\"collectionNumber\":\"${card.collectionNumber.value}\"}",
             correlationId.value
         )
     }

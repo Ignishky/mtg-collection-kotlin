@@ -9,16 +9,12 @@ data class Card(
     internal val setCode: SetCode,
     internal val images: List<CardImage>,
     internal val collectionNumber: CollectionNumber,
-) : Aggregate<CardId>, Comparable<Card> {
+) : Aggregate<CardId> {
 
-    constructor() : this(CardId(""), CardName(""), SetCode(""), emptyList(), CollectionNumber(0))
+    constructor() : this(CardId(""), CardName(""), SetCode(""), emptyList(), CollectionNumber(""))
 
     override fun id(): CardId {
         return id
-    }
-
-    override fun compareTo(other: Card): Int {
-        return collectionNumber.value - other.collectionNumber.value
     }
 
 }

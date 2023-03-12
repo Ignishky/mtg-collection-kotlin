@@ -12,9 +12,9 @@ data class CardEntity(
     internal val name: String,
     internal val setCode: String,
     internal val images: String,
-    internal val collectionNumber: Int
+    internal val collectionNumber: String
 ) {
 
-    constructor() : this("", "", "", "", 0)
+    constructor() : this("", "", "", "", "")
 
 }
