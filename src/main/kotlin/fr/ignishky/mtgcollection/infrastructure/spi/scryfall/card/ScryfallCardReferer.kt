@@ -1,10 +1,7 @@
 package fr.ignishky.mtgcollection.infrastructure.spi.scryfall.card
 
 import fr.ignishky.mtgcollection.configuration.ScryfallProperties
-import fr.ignishky.mtgcollection.domain.card.model.Card
-import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.model.CardImage
-import fr.ignishky.mtgcollection.domain.card.model.CardName
+import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardRefererPort
 import fr.ignishky.mtgcollection.domain.set.model.SetCode
 import jakarta.inject.Named
@@ -42,7 +39,7 @@ class ScryfallCardReferer(
                 ?.map { (imageUris) -> imageUris.borderCrop.split("?")[0] }
                 ?.map { crop -> CardImage(crop) }
                 ?: emptyList()
-            Card(CardId(it.id), CardName(it.name), SetCode(it.set), images)
+            Card(CardId(it.id), CardName(it.name), SetCode(it.set), images, CollectionNumber(it.collectionNumber))
         }
     }
 

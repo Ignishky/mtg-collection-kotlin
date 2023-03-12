@@ -32,11 +32,12 @@ class JdbcUtils(private val template: JdbcTemplate) {
         }
         cards.map {
             template.update(
-                "INSERT INTO cards (id, name, set_code, images) VALUES (?, ?, ?, ?)",
+                "INSERT INTO cards (id, name, set_code, images, collection_number) VALUES (?, ?, ?, ?, ?)",
                 it.id.value,
                 it.name.value,
                 it.setCode.value,
-                it.images.joinToString { image -> image.value }
+                it.images.joinToString { (value) -> value },
+                it.collectionNumber.value,
             )
         }
     }

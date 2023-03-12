@@ -5,6 +5,7 @@ import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
 import fr.ignishky.mtgcollection.domain.card.model.Card
 import fr.ignishky.mtgcollection.domain.card.model.CardName
+import fr.ignishky.mtgcollection.domain.card.model.CollectionNumber
 import fr.ignishky.mtgcollection.domain.set.model.Set
 import fr.ignishky.mtgcollection.domain.set.model.SetIcon
 import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
@@ -106,7 +107,7 @@ class RefreshApiTest(
             listOf(khm.copy(icon = SetIcon("Old Icon"))),
             listOf(
                 axgardBraggart.copy(name = CardName("Old Name")),
-                halvar.copy(images = emptyList())
+                halvar.copy(images = emptyList(), collectionNumber = CollectionNumber(-1))
             )
         )
 
@@ -172,7 +173,7 @@ class RefreshApiTest(
             "Card",
             "CardCreated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
+            "{\"name\":\"${card.name.value}\",\"setCode\":\"${card.setCode.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}],\"collectionNumber\":${card.collectionNumber.value}}",
             correlationId.value
         )
     }
@@ -184,7 +185,7 @@ class RefreshApiTest(
             "Card",
             "CardUpdated",
             parse("1981-08-25T13:50:00Z"),
-            "{\"name\":\"${card.name.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}]}",
+            "{\"name\":\"${card.name.value}\",\"images\":[${card.images.joinToString(",") { "\"${it.value}\"" }}],\"collectionNumber\":${card.collectionNumber.value}}",
             correlationId.value
         )
     }

@@ -4,32 +4,36 @@ import fr.ignishky.framework.cqrs.event.Event
 import fr.ignishky.framework.cqrs.event.EventHandler
 import fr.ignishky.framework.cqrs.event.Payload
 import fr.ignishky.mtgcollection.domain.card.event.CardUpdated.CardUpdatedPayload
-import fr.ignishky.mtgcollection.domain.card.model.Card
-import fr.ignishky.mtgcollection.domain.card.model.CardId
-import fr.ignishky.mtgcollection.domain.card.model.CardImage
-import fr.ignishky.mtgcollection.domain.card.model.CardName
+import fr.ignishky.mtgcollection.domain.card.model.*
 import fr.ignishky.mtgcollection.domain.card.port.CardStorePort
 import jakarta.inject.Named
 import mu.KotlinLogging
 import java.time.Clock
 import kotlin.reflect.KClass
 
-class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, clock: Clock) :
+class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, collectionNumber: CollectionNumber, clock: Clock) :
     Event<CardId, Card, CardUpdatedPayload>(
         0,
         aggregateId,
         Card::class,
-        CardUpdatedPayload(name.value, images.map { it.value }),
+        CardUpdatedPayload(name.value, images.map { it.value }, collectionNumber.value),
         clock.instant()
     ) {
 
     override fun apply(aggregate: Card): Card {
-        return Card(aggregateId, CardName(payload.name), aggregate.setCode, payload.images.map { CardImage(it) })
+        return Card(
+            aggregateId,
+            CardName(payload.name),
+            aggregate.setCode,
+            payload.images.map { CardImage(it) },
+            CollectionNumber(payload.collectionNumber)
+        )
     }
 
     data class CardUpdatedPayload(
         val name: String,
-        val images: List<String>
+        val images: List<String>,
+        val collectionNumber: Int
     ) : Payload
 
     @Named
@@ -47,4 +51,5 @@ class CardUpdated(aggregateId: CardId, name: CardName, images: List<CardImage>, 
         }
 
     }
+
 }

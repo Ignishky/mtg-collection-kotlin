@@ -10,7 +10,7 @@ import jakarta.inject.Named
 class GetAllCards(private val cardStorePort: CardStorePort) : CardApiPort {
 
     override fun getAll(setCode: SetCode): List<Card> {
-        return cardStorePort.get(setCode)
+        return cardStorePort.get(setCode).sortedBy { card: Card -> card.collectionNumber.value }
     }
 
 }

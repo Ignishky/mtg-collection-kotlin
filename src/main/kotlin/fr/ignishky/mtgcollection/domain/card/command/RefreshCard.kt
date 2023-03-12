@@ -33,11 +33,14 @@ class RefreshCard : Command {
                     Pair(cardRefererPort.getCards(set.code), cardStorePort.get(set.code).associateBy { it.id })
                 }
                 .flatMap { (refererCards, knownCards) ->
-                    refererCards.mapNotNull { (id, name, setCode, images) ->
+                    refererCards.mapNotNull { (id, name, setCode, images, collectionNumber) ->
                         if (!knownCards.contains(id)) {
-                            CardCreated(id, name, setCode, images, clock)
-                        } else if (knownCards[id]!!.name != name || !knownCards[id]!!.images.containsAll(images)) {
-                            CardUpdated(id, name, images, clock)
+                            CardCreated(id, name, setCode, images, collectionNumber, clock)
+                        } else if (knownCards[id]!!.name != name
+                            || knownCards[id]!!.collectionNumber != collectionNumber
+                            || !knownCards[id]!!.images.containsAll(images)
+                        ) {
+                            CardUpdated(id, name, images, collectionNumber, clock)
                         } else {
                             null
                         }

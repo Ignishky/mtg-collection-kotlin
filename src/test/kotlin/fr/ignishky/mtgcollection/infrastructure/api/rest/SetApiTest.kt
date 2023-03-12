@@ -68,7 +68,7 @@ internal class SetApiTest(
     @Test
     fun `Should return cards from given set`() {
         // GIVEN
-        jdbc.save(listOf(afr), listOf(plus2Mace, arboreaPegasus, axgardBraggart))
+        jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/afr"))
@@ -77,7 +77,7 @@ internal class SetApiTest(
         resultActions.andExpectAll(
             status().isOk,
             content().contentType(APPLICATION_JSON),
-            content().json(readFile("refresh/cardsResponse.json"))
+            content().json(readFile("refresh/cardsResponse.json"), true)
         )
     }
 
