@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.api.rest
+package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
 import fr.ignishky.framework.domain.CorrelationId
 import fr.ignishky.framework.domain.CorrelationIdGenerator
@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
-internal class SetApiTest(
+internal class SetApiIT(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val jdbc: JdbcUtils,
 ) {

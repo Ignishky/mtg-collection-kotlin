@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.api.rest
+package fr.ignishky.mtgcollection.infrastructure.api.rest.refresh
 
 import fr.ignishky.framework.cqrs.event.spi.postgres.EventEntity
 import fr.ignishky.framework.domain.CorrelationId
@@ -39,7 +39,7 @@ import java.time.Instant.parse
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @MockServerTest("scryfall.base-url=http://localhost:\${mockServerPort}")
-class RefreshApiTest(
+class RefreshApiIT(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val jdbc: JdbcUtils,
 ) {
@@ -69,7 +69,7 @@ class RefreshApiTest(
         mockServerBuilder.prepareSets("scryfall_set_khm.json")
         mockServerBuilder.prepareCards("khm")
 
-        val resultActions = mockMvc.perform(put("/sets"))
+        val resultActions = mockMvc.perform(put("/refresh-all"))
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
@@ -90,7 +90,7 @@ class RefreshApiTest(
         mockServerBuilder.prepareCards("khm")
         jdbc.save(listOf(khm), listOf(axgardBraggart, halvar))
 
-        val resultActions = mockMvc.perform(put("/sets"))
+        val resultActions = mockMvc.perform(put("/refresh-all"))
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents()).isEmpty()
@@ -111,7 +111,7 @@ class RefreshApiTest(
             )
         )
 
-        val resultActions = mockMvc.perform(put("/sets"))
+        val resultActions = mockMvc.perform(put("/refresh-all"))
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())
@@ -127,7 +127,7 @@ class RefreshApiTest(
         mockServerBuilder.prepareSets("scryfall_set_afr.json")
         mockServerBuilder.prepareCards("afr", "afr_page2")
 
-        val resultActions = mockMvc.perform(put("/sets"))
+        val resultActions = mockMvc.perform(put("/refresh-all"))
 
         resultActions.andExpect(status().isNoContent)
         assertThat(jdbc.getEvents())

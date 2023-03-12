@@ -1,4 +1,4 @@
-package fr.ignishky.mtgcollection.infrastructure.api.rest
+package fr.ignishky.mtgcollection.infrastructure.api.rest.set
 
 data class CardsResponse(
     val cards: List<CardResponse>
