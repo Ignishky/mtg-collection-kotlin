@@ -35,6 +35,26 @@ object TestFixtures {
         )
     }
 
+    fun flumph(): Card {
+        return Card(
+            CardId("cdc86e78-8911-4a0d-ba3a-7802f8d991ef"),
+            CardName("Flumph"),
+            SetCode("afr"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/flumph.svg")),
+            CollectionNumber("15")
+        )
+    }
+
+    fun specialPegasus(): Card {
+        return Card(
+            CardId("4e076b7f-14f3-4ce2-83f9-a18ccb2b755f"),
+            CardName("Special Pegasus"),
+            SetCode("afr"),
+            listOf(CardImage("https://scryfall.mtgc.test/cards/specialPegasus.svg")),
+            CollectionNumber("S2"),
+        )
+    }
+
     fun khm(): Set {
         return Set(
             SetId("43057fad-b1c1-437f-bc48-0045bce6d8c9"),

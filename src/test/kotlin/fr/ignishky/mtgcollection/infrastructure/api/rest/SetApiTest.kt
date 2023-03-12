@@ -6,8 +6,10 @@ import fr.ignishky.mtgcollection.infrastructure.JdbcUtils
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.afr
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.arboreaPegasus
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.axgardBraggart
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.flumph
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.khm
 import fr.ignishky.mtgcollection.infrastructure.TestFixtures.plus2Mace
+import fr.ignishky.mtgcollection.infrastructure.TestFixtures.specialPegasus
 import fr.ignishky.mtgcollection.infrastructure.TestUtils.readFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -42,6 +44,8 @@ internal class SetApiTest(
     private val plus2Mace = plus2Mace()
     private val arboreaPegasus = arboreaPegasus()
     private val axgardBraggart = axgardBraggart()
+    private val flumph = flumph()
+    private val specialPegasus = specialPegasus()
 
     @BeforeEach
     fun setUp() {
@@ -68,7 +72,7 @@ internal class SetApiTest(
     @Test
     fun `Should return cards from given set`() {
         // GIVEN
-        jdbc.save(listOf(afr), listOf(arboreaPegasus, plus2Mace, axgardBraggart))
+        jdbc.save(listOf(afr), listOf(arboreaPegasus, specialPegasus, flumph, plus2Mace, axgardBraggart))
 
         // WHEN
         val resultActions = mockMvc.perform(get("/sets/afr"))
